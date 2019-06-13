@@ -18,7 +18,36 @@
 """ print输出默认换行,可以在结尾加上end=连接符,连接不同print字符串 """
 # print("\n")
 # print(r"\n")
-print("a",end="傻逼")
-print("随便")
-print(""" \n """)
+# print("a",end="傻逼")
+# print("随便")
+# print(""" \n """)
+class Vector:
+   # 自定义类的方法第一个参数是方法的实例自身,惯例命名为self,也可以随意命名,但不推荐
+   def __init__(self, a, b):
+      self.a = a
+      self.b = b
+ 
+   def __str__(self):
+      return 'Vector (%d, %d)' % (self.a, self.b)
+   
+""" 运算符重载是内置的私有方法,使得类可以按照自定义的方法使用各类基础运算符,
+本例为使用加号运算符 """   
 
+   def __add__(self,other):
+      return Vector(self.a + other.a, self.b + other.b)
+
+""" self参数代表的是类的实例(也即是变量),而非类本身 """
+   def prt(self):
+""" 自定义类的第一个参数必须是实例本身,即使是无参方法,也必须声明实例本身作为参数 """
+""" 自定义类从第二个参数开始,才是真正的参数 """
+      print(self)
+""" 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
+      print(self.__class__)
+v1 = Vector(2,10)
+v2 = Vector(5,-2)
+v3 = Vector(1,2)
+print(v1+v2+v3)
+print(v1)
+""" 类的私有属性和方法以双下划线开头,私有属性无法被实例从外部调用,但是类的私有属性可以被外部调用 """
+print(v1.__class__.__name__)
+v1.prt()
