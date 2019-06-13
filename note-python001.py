@@ -21,7 +21,7 @@
 # print("a",end="傻逼")
 # print("随便")
 # print(""" \n """)
-""" 注释不要打断缩进关系树,即本例中从class下穿和def连接def的纵线 """
+""" 注释不要打断缩进关系树,如本例中从class下穿和def连接def的纵线 """
 class Vector:
    """ 自定义类的方法第一个参数是方法的实例自身,例命名为self,也可以随意命名,但不推荐 """
    """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
@@ -33,8 +33,10 @@ class Vector:
       return 'Vector (%d, %d)' % (self.a, self.b)
       """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用各类基础运算符,
       本例为使用加号运算符 """
+
    def __add__(self,other):
       return Vector(self.a + other.a, self.b + other.b)
+      
       """ self参数代表的是类的实例(也即是变量),而非类本身 """
    def prt(self):
       print(self)
