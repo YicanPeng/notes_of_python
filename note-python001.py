@@ -49,7 +49,7 @@ fibo(100,n=1)
 import sys
 """ 引入函数以后,可以通过赋值的方式,对函数进行重命名,以减小代码量 """
 """ sys.path属性返回python引入包和模块的所有路径,第一个路径永远是当前py文件所在的文件夹
-可以通过sys.path.append方法手动添加模块路径 """
+可以通过sys.path.append(模块路径)的方式手动添加模块路径 """
 aaa = sys.path
 bbb = fibo
 # print(aaa)
