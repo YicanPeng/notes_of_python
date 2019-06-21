@@ -21,7 +21,7 @@ r""" 反斜杠\也是文本字符转义符"""
 """ python空行只是为了区分函数块,无实际意义 """
 """ 同一行内多条语句时,python使用;分号表示语句结束(不推荐一行多条语句) """
 """ print(字符串1,字符串2,字符串3...[sep=" ",end=" \n"])可以输出任意多个字符串,
-   其中sep参数是不同字符串的间隔符,默认为空格,end参数是两个print之间的连接符,默认为回车 """
+   其中sep参数是不同字符串的间隔符,默认为空格,end参数是两个print之间的连接符,默认为换行符\n """
 str000="runoob"
 # print(str,"\n")
 # print(r"\n")
@@ -178,9 +178,12 @@ ite006_1=iter(lis006_1)
 """ 函数没有return,返回值是None """
 """ 自定义函数时,可以声明缺省参数,如本例中的l参数和n参数,如有非默认参数,则默认参数必须放在函数定义语句的最后
    加*的参数是不定长参数,类似VBA的可选参数,加一个*,参数以元组类型代入,如本例m参数;
-      加两个*,参数以字典类型代入
+      加两个*,参数必须以键=值的方式输入,且返回值也是字典形式
    在引用函数时,不定长参数之后的参数必须使用索引名赋值,如本例n参数 """
 """ 自定义函数最好以return结尾,而且python中return可以返回多个值 """
+def double_aster(**a):
+   print(a)
+# double_aster(b=2,c=5)
 def fibo(l=100,*m,n=100):
    a,b=0,1
    list_fibo=[]
@@ -216,15 +219,14 @@ fb = fibo
 """ dir函数返回包或模块或函数所有自定义的关键字 """
 # print(dir(fb))
 # fb()
-""" 文件引用自身内置属性和方法,无需前缀,__name__属性永远是__main__ """
-# print(__name__)
+
 """ enumerate函数可以把列表或元组的索引序数和元素成对对应成类似字典键:值的关系的元组,默认从0开始索引 """
 str008_1="asdfgh"
 enu008_1=enumerate(str008_1)
 dic008_1={i:ele for i,ele in enu008_1}
 # for k,v in enumerate("asdf"):
 #    print(k)
-# for k in enumerate(list("asdf")):
+# for k in enumerate("asdf"):
 #    print(k)
 """ 无法遍历提前生成的enumerate对象,只能遍历语句中的enumerate函数结果 """
 # for k,v in enu008_1:
@@ -236,7 +238,7 @@ sm = lambda x,y,z : x+y+z
 # print(sm(1,2,3))
 """ Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，
    其它的代码块（如 if/elif/else/、try/except、for/while等）是不会引入新的作用域的，
-   也就是说这些语句内定义的变量，外部也可以访问 """
+   也就是说这些语句内定义的变量是全局变量，外部也可以访问 """
 """ python按照LEGB的顺序查找变量,Local局域作用域,Enclosing内嵌函数的外包函数的作用域,Global全局作用域,Builtin内置作用域(内置函数所在模块) """
 # if True:
 #    msg008="welcome"
@@ -253,6 +255,21 @@ def out008():
    print(num*2,in008(),num*2)
    return
 # out008()
+""" help函数是内置函数,返回数据类型或函数或模块的详细说明 """
+# help(print)
+""" yield保留字让自定义函数返回值是可迭代的生成器generator,而且不像list那样占用内存
+   return保留字不会保留前次执行后的变量值,因此不可迭代 """
+def feb001(max):
+   n,a,b = 0,0,1
+   while n < max:
+      yield b
+      a,b = b, a+b
+      n = n +1
+feb001_2=feb001(5)
+# print(next(feb001_2),next(feb001_2),sep=",")
+""" 一个迭代器只能使用一次,已经输出的迭代元素,无法再次输出 """
+# for n in feb001_2:
+#    print(n)
 
 """ 数据结构 """
 """ 列表可以使用.append方法和.pop方法使其成为堆栈stack(后进先出) """
@@ -261,31 +278,9 @@ def out008():
 """ reversed函数倒转序列 """
 """ sorted函数生成排序的序列 """
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """ 自定义类 """
 """ 注释不要打断缩进关系树,如本例中从class下穿和def连接def的纵线 """
-""" 自定义类class语句无需参数括号(),类的外部参数在init函数中赋值,并参与类的方法参与运算 """
+""" 自定义类的外部参数在init函数中赋值,并参与类的方法参与运算 """
 class Vector:
    """ 自定义类的方法第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
    """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
@@ -296,7 +291,7 @@ class Vector:
    def __str__(self):
       return 'Vector (%d, %d)' % (self.a, self.b)
    """ 注释只能与代码块主句对齐,不能与子句缩进 """
-   """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用各类基础运算符
+   """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用类的基础运算符
    本例为使用加号运算符 """
    def __add__(self,other):
       return Vector(self.a + other.a, self.b + other.b)
@@ -312,6 +307,10 @@ v2 = Vector(5,-2)
 v3 = Vector(1,2)
 # print(v1+v2+v3)
 # print(v1)
+""" 文件引用自身内置属性和方法,无需前缀,__name__属性永远是__main__ 
+   由于模块第一次被引入时模块的主程序main必定会被执行
+   在自定义类时,可以通过判断name属性是否为main,限定类只能在模块被整体引入时才能执行 """
+# print(__name__)
 """ 类的私有属性和方法以双下划线开头,实例的私有属性无法被实例从外部调用,但是类的私有属性可以被外部调用 """
 # print(v1.__class__.__name__)
 # v1.prt()
@@ -341,20 +340,86 @@ ite008_1=iter(cls001)
 # print(next(ite008_1),next(ite008_1),sep=",")
 # for x in ite008_1:
 #    print(x,end=",")
-""" help函数是内置函数,返回数据类型或函数或模块的详细说明 """
-# help(print)
-""" yield保留字让自定义函数返回值是可迭代的生成器generator,而且不像list那样占用内存
-   return保留字不会保留前次执行后的变量值,因此不可迭代 """
-def feb001(max):
-   n,a,b = 0,0,1
-   while n < max:
-      yield b
-      a,b = b, a+b
-      n = n +1
-feb001_2=feb001(5)
-# print(next(feb001_2),next(feb001_2),sep=",")
-""" 一个迭代器只能使用一次,已经输出的迭代元素,无法再次输出 """
-# for n in feb001_2:
-#    print(n)
+""" 自定义子类可以同时继承多个父类的函数,如果子类的自定义函数与父类相同,则子类的函数覆盖父类,
+   多继承的父类函数重名时,默认继承括号内排前的父类函数
+   super函数可以调用子类的父类同名函数 """
+""" 以下示例中展示了format函数的和字典对象的联用,format函数和序列对象的联用 """
+class people:
+    #定义基本属性
+    name = ''
+    age = 0
+    #定义私有属性,私有属性在类外部无法直接进行访问
+    __weight = 0
+    #定义构造方法
+    def __init__(self,n,a,w):
+        self.name = n
+        self.age = a
+        self.__weight = w
+    def speak(self):
+        print("%s 说: 我 %d 岁。" %(self.name,self.age))
+class student(people):
+    grade = ''
+    def __init__(self,n,a,w,g):
+        #调用父类的构函
+        people.__init__(self,n,a,w)
+        self.grade = g
+    #覆写父类的speak方法
+    def speak(self):
+        #本例中大括号{}内第一个0不可省略,表示format的参数索引序数
+        print("{0[0]} 说: 我 {0[1]} 岁了，我在读 {0[2]} 年级".format([self.name,self.age,self.grade]))
+class speaker():
+    topic = ''
+    name = ''
+    def __init__(self,n,t,a):
+        self.name = n
+        self.topic = t
+        self.age=a
+        self.properties008={"q":self.name,"w":self.topic,"e":self.age}
+    def speak(self):
+        print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
+""" 由于大括号{}内的索引返回的是带括号的文本,所以上例中字典无法以数字作为键来进行索引 """
+class sample(student,speaker):
+# 切换不同顺序则父类不同
+# class sample(speaker,student):
+   #  a =''
+    def __init__(self,n,a,w,g,t):
+        student.__init__(self,n,a,w,g)
+        speaker.__init__(self,n,t,a)
+test = sample("Tim",25,80,4,"Python")
+""" 方法名同，默认调用的是在括号中排前地父类的方法 """
+# test.speak()
+""" super函数第一个参数是变量的子类,第二个参数是变量,使用后返回一个以子类参数为参数的父类对象 """
+# super(sample,test).speak()
 
+""" 输入与输出 """
+""" print输出用户易读的字符串(不带引号),repr输出程序易读的字符串(带引号) """
+str009_1="asd"
+# print(str009_1)
+# repr(str009_1)
+""" 按指定格式输出 """
+""" 字符串.rjust方法右对齐,字符串.ljust方法左对齐,字符串.center方法居中对齐 """
+# for x in range(1,11,1):
+#    print(repr(x).rjust(2),repr(x*x).rjust(3),end=" ")
+#    print(repr(x**3).rjust(4))
+# for x in range(1,11,1):
+#    print("{:2d} {:3d} {:4d}".format(x,x**2,x**3))
 
+""" 代码改进与优化 """
+""" 代码由于经常出现bug,需要设置某些错误处理语句 """
+div = lambda y:1/y
+""" except从句仅在try子句出错时,根据错误类型执行except子句 """
+""" as从句用于别名 """
+""" 不带错误类型的except子句必须放在所有except子句最后,对未声明的错误类型进行兜底 """
+""" 仅当try子句无异常执行完毕时,执行else子句 """
+""" 无论try从句是否异常,finally从句都会执行,所以必须放在最后 """
+try:
+   print(div(int(input())))
+except ZeroDivisionError as err:
+   print("请不要输入0",err)
+except:
+   print("请勿输入字符串")
+else:
+   print("一切正常")
+finally:
+   print("over")
+""" 当使用某个打开后必须要关闭的对象(主要是file对象)时,使用with语句可以简化代码 """
