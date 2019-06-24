@@ -43,7 +43,8 @@ str000="runoob"
 num001=1234;str001="runoob";tup001=(num001,str001,0)
 """推导式语句: 自变量表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2 
    推导式语句中 for...in...if... 相当于定语(状语)从句,因此不能加逗号隔开;
-   python中逗号仅用于同步成对元素的同时赋值,详见zip函数和enumerate函数"""
+   多个for子句的嵌套遵循相同的for循环运算顺序,即外部大循环在前而内部小循环在后;
+   python中多个变量逗号仅用于同步成对元素的同时赋值,详见zip函数和enumerate函数"""
 """ range函数的头标是0,左闭右开区间 """
 # lis001_1=[x+y+z for z in range(1) for x in range(2) for y in range(3) ]
 # num001[0]=5
@@ -58,7 +59,8 @@ num002_0,num002_1,num002_2,num002_3,num002_4,num002_5="abcdefg"[0:-1]
 """ 字符串.format方法:大括号{}内,冒号:代替百分号%作为格式化占位符,冒号:前面可以加索引符,其他格式化辅助符不变 """
 # print("我是{n},我今年{a:.3f}岁".format(a=float(input("请输入年龄")),n=input("请输入姓名")))
 """ type函数可以返回值的类,isinstance函数判断是否属于指定的类,
-   而且isinstance认为子类是父类的一种,而type不认为子类是父类的一种 """
+   而且isinstance认为子类是父类的一种,而type不认为子类是父类的一种,instance第二个参数可以是元组 """
+# print(isinstance(1.23,(float,int)))
 """使用del 变量1,变量2...  可以删除对象"""
 """ 数字包括整数,浮点数,布尔值,复数;复数的虚部关键字j """
 """ 数字0,空字符串"",空容器(空列表[]空字典{}空元组()空集合set()),None都是布尔值的False """
@@ -71,6 +73,7 @@ str002="runoob";lis002=["a",1,3+2j];tup002=(str002,lis002,0);tup002_1=("a",);str
 """ 集合set和字典dictionary的标识符都是大括号{},其中空集合只能用set()函数赋值,而{}赋值的是空字典 """
 """ 集合使用set函数赋值,则其参数必须是可迭代的,即必须是字符串或列表或元组,且只能是一个值或空值
    以下set003_1和set003_2就无法赋值 """
+""" 集合是没有值的字典,而字典是成对二元元组的集合 """
 """ 集合的元素是无序的,因此无法索引 """
 """ 集合输出时,重复元素会被自动剔除 """
 """ 集合常用于判断元素关系和删除重复元素 """
@@ -99,32 +102,49 @@ dic004_1={}
 dic004_1["one"]=1
 dic004_1[2]="second"
 # print(dic004_1)
-""" 例2循环语句赋值 """
+""" 例2列表推导式 """
 dic004_3={x:x**y for x in range(1,4) for y in range(1,4)}
 # print(dic004_3)
 """ dict函数的参数可以是成对赋值如例3,或者是元组组成的列表如例4,或者和zip函数嵌套如例5 """
 """ 例3dict函数成对赋值,这种声明方式,键必须是字符串或元组(因为数字无法被赋值) """
+""" 例3中使用变量赋值方式配对,因此不能是 '文本'=数字,这种方式是特殊方式,不常用 """
 dic004_4 = dict(runoob=1,Google =2,淘宝=3)
 # print(dic004_4)
-""" 例4dict函数用成对元组作为元素的列表赋值 """
+""" 例4dict函数用成对二元元组作为元素的列表赋值,zip和enumerate函数嵌套都是这类赋值 """
 dic004_2=dict([("雅蠛蝶",233),("stupid",1)])
 # print(dic004_2["雅蠛蝶"])
 """ 例5dict函数和zip函数嵌套赋值 """
+""" python内置的map,zip,reversed,enumerate函数都是生成器函数,赋值时实际上没有任何运算
+   当返回对象时通过序列转换函数或迭代才会实体化为序列,展开运算
+   迭代使用时必须直接写入句子中,不能赋值为变量再代入,必须把函数直接写入语句中才能产生迭代
+   特例: sorted函数也是生成器函数,但是可以直接展开 """
 lis004_5_1=[1,2,3]
 lis004_5_2=["谷歌","淘宝","企鹅","alibaba"]
-tup004_5_3=(1,2,3)
-""" zip函数生成一个zip对象,而非list或tuple """
+tup004_5_3=(3,6,9)
+tup004_5_4=(4,8,12)
+""" zip函数生成一个zip对象,是多元成对元组作为元素的特殊序列 """
 zip004_5_1=zip(lis004_5_1,lis004_5_2)
-zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3) #不匹配
+zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) #不匹配
 dic004_5_1=dict(zip004_5_1)
-# print(list(zip004_5_1))
+dic004_5_2={}
+""" 以下示例中第一句有效,而第二句运算无效,zip函数必须即写即用(enumerate,map,reversed同理) """
+# for k,v in zip(lis004_5_1,lis004_5_2):
+# for k,v in list(zip004_5_1):
+   # dic004_5_2[k]=v
+""" zip函数必须即写即用,所以以下第一句可行,而第二句无效 """
+# print(next(zip(lis004_5_1,lis004_5_2)))
+# print(next(zip004_5_1))
 # print(dic004_5_1)
-""" zip对象可以通过迭代展开 """
-# for x,y,z in zip004_5_2:
-#    print(x,y,z,sep="@",end="\n")
-""" zip函数用于把多个列表配对成成对元组作为元素的一维列表,其反用法如下 """
-lis004_a,lis004_b =zip(*zip(lis004_5_2,tup004_5_3))
-# print(lis004_a,lis004_b)
+# print(dic004_5_2)
+""" zip对象可以通过迭代或字典展开,无法直接展开 """
+""" *rest关键字用于指代成对序列的剩余全部元素 """
+# for x,y,*rest in zip004_5_2:
+#    print(x,y,sep="@",end="\n")
+
+""" zip函数用于把多个列表配对成成对元组作为元素的一维列表,其解压如下 """
+tup004_a,tup004_b,*rest =zip(*(("a",1,3,7),("b",2,6,14),("c",3,9,21)))
+# print(tup004_a,tup004_b,*rest)
+""" reversed和sorted函数生成一个新的对象,也就是数值传递 """
 
 """ 判断与循环 """
 """ if...elif...else判断语句需要缩进 """
@@ -145,7 +165,7 @@ num005_3 = 1
 #    print("\n",num005_3,"大于或等于10")
 """ for...in...else...循环是有限循环,用于遍历序列(iter)
    for循环中,else只在全部遍历之后才执行;循环异常中断break则不会执行 """
-""" break终止循环 """
+""" break终止循环;当有多层嵌套时,break只终止内层小循环 """
 # for str005_1 in "asdfgh":
 #    if str005_1 == "f":
 #       break
@@ -161,7 +181,9 @@ num005_3 = 1
 #    print("查找完毕")
 
 """ 迭代器与生成器 """
-""" 使用iter函数可以把字符串,列表,元组,集合,字典生成迭代器,迭代器使用next函数只进不退 """
+""" 使用iter函数可以把字符串,列表,元组,集合,字典生成迭代器,迭代器使用next函数只进不退
+   可以使用iter函数的对象,称为可迭代对象
+   各类序列必须要使用iter函数后才可以使用next函数迭代 """
 lis006_1=[0,1,2,3,4]
 ite006_1=iter(lis006_1)
 # print(next(ite006_1),next(ite006_1),sep=",")
@@ -170,11 +192,14 @@ ite006_1=iter(lis006_1)
 """ 自定义类中使用__iter__()和__next__()内置函数构造迭代器属性,详见自定义类 """
 """ 自定义函数中使用yield关键字,可通过内置循环条件生成可迭代的yield对象,且不占用内存,详见自定义类
    这类自定义函数被称为生成器generator """
-""" for...in 迭代变量: 循环语句中使用有迭代属性的变量,会自动调用next函数,类似使用序列 """
+""" 推导式也是生成器: (函数语句 for 变量范围 if 子句) ,小括号()是标识符 """
+gen006=(x*y for x in range(3) for y in range(3))
+# print(next(gen006))
+""" for...in 可迭代对象: 循环语句中使用有迭代属性的变量,会自动调用next函数,类似for... in... iter(序列) """
 
 """ 内置函数和自定义函数 """
-""" 不可变对象(数字,字符串,元组)相当于VBA的值传递,原有变量不会被函数运算重新赋值;
-   可变对象类似引用传递,与函数共享同一内存指针,会在函数运算后被重新赋值 """
+""" 不可变对象(数字,字符串,元组)的运算和赋值相当于VBA的值传递,原有变量不会被函数运算重新赋值;
+   可变对象赋值和运算都是引用传递,与函数共享同一内存指针,对象会在函数运算后被重新赋值 """
 """ 函数没有return,返回值是None """
 """ 自定义函数时,可以声明缺省参数,如本例中的l参数和n参数,如有非默认参数,则默认参数必须放在函数定义语句的最后
    加*的参数是不定长参数,类似VBA的可选参数,加一个*,参数以元组类型代入,如本例m参数;
@@ -235,7 +260,10 @@ dic008_1={i:ele for i,ele in enu008_1}
 #    print(k,v)
 """ lambda 变量1,变量2,变量3... : 表达式 语句用于创建简单的匿名函数,仅可以使用自身参数变量 """
 sm = lambda x,y,z : x+y+z
+""" lambda也可以用于柯里化currying一个已有函数,固定其中某个参数,以生成新函数 """
+sm_1=lambda x : sm(1,1,x)
 # print(sm(1,2,3))
+# print(sm_1(1))
 """ Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，
    其它的代码块（如 if/elif/else/、try/except、for/while等）是不会引入新的作用域的，
    也就是说这些语句内定义的变量是全局变量，外部也可以访问 """
@@ -412,14 +440,32 @@ div = lambda y:1/y
 """ 不带错误类型的except子句必须放在所有except子句最后,对未声明的错误类型进行兜底 """
 """ 仅当try子句无异常执行完毕时,执行else子句 """
 """ 无论try从句是否异常,finally从句都会执行,所以必须放在最后 """
-try:
-   print(div(int(input())))
-except ZeroDivisionError as err:
-   print("请不要输入0",err)
-except:
-   print("请勿输入字符串")
-else:
-   print("一切正常")
-finally:
-   print("over")
+# try:
+#    print(div(int(input())))
+# except ZeroDivisionError as err:
+#    print("请不要输入0",err)
+# except:
+#    print("请勿输入字符串")
+# else:
+#    print("一切正常")
+# finally:
+#    print("over")
 """ 当使用某个打开后必须要关闭的对象(主要是file对象)时,使用with语句可以简化代码 """
+
+""" 数据分析入门 """
+# import numpy as np 
+# import matplotlib.pyplot as plt 
+# import pandas as pd
+# import seaborn as sns
+# import statsmodels as sm
+""" 自定义isiterable函数以后使用 """
+def isiterable(ele):
+   try:
+      iter(ele)
+      return True
+   except TypeError:
+      return False
+
+# print(isiterable(55))
+# print(isiterable(str(55)))
+
