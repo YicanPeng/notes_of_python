@@ -42,11 +42,11 @@ str000="runoob"
 """ 列表的追加.append,插入.insert,删除.remove,移除.pop(默认最后一项)"""
 num001=1234;str001="runoob";tup001=(num001,str001,0)
 """推导式语句: 自变量表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2 
-   推导式语句中 for...in...if... 相当于定语(状语)从句,因此不能加逗号隔开;
+   推导式语句中 for...in...if... 相当于定语(状语)从句,因此多个并列子句不能加逗号隔开;
    多个for子句的嵌套遵循相同的for循环运算顺序,即外部大循环在前而内部小循环在后;
    python中多个变量逗号仅用于同步成对元素的同时赋值,详见zip函数和enumerate函数"""
 """ range函数的头标是0,左闭右开区间 """
-# lis001_1=[x+y+z for z in range(1) for x in range(2) for y in range(3) ]
+lis001_1=[x+y+z for x,y,z in zip(range(3),range(3),range(3)) ]
 # num001[0]=5
 # str001[0]="x"
 # tup001[0]="a"
@@ -110,28 +110,39 @@ dic004_3={x:x**y for x in range(1,4) for y in range(1,4)}
 """ 例3中使用变量赋值方式配对,因此不能是 '文本'=数字,这种方式是特殊方式,不常用 """
 dic004_4 = dict(runoob=1,Google =2,淘宝=3)
 # print(dic004_4)
-""" 例4dict函数用成对二元元组作为元素的列表赋值,zip和enumerate函数嵌套都是这类赋值 """
+""" 例4dict函数用成对二元元组作为元素的序列赋值,zip和enumerate函数嵌套都是这类赋值 """
 dic004_2=dict([("雅蠛蝶",233),("stupid",1)])
 # print(dic004_2["雅蠛蝶"])
 """ 例5dict函数和zip函数嵌套赋值 """
-""" python内置的map,zip,reversed,enumerate函数都是生成器函数,赋值时实际上没有任何运算
+""" python内置的map,zip,reversed,enumerate,sorted函数都是生成器函数,赋值时实际上没有任何运算
    当返回对象时通过序列转换函数或迭代才会实体化为序列,展开运算
+   其中zip和enumerate只能使用tuple函数展开或即写即用,不能使用list和iter函数展开
    迭代使用时必须直接写入句子中,不能赋值为变量再代入,必须把函数直接写入语句中才能产生迭代
-   特例: sorted函数也是生成器函数,但是可以直接展开 """
+   特例: sorted自变量就是生成器,返回值也是生成器,可以直接展开 """
 lis004_5_1=[1,2,3]
 lis004_5_2=["谷歌","淘宝","企鹅","alibaba"]
 tup004_5_3=(3,6,9)
 tup004_5_4=(4,8,12)
 """ zip函数生成一个zip对象,是多元成对元组作为元素的特殊序列 """
 zip004_5_1=zip(lis004_5_1,lis004_5_2)
-zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) #不匹配
+tup004_5_1=tuple(zip004_5_1)
+# lis004_5_1z=list(next(zip004_5_1))
+ite004_5_1=iter(zip004_5_1)
+rev004_5_1=reversed(lis004_5_1)
+lis004_5_1r=list(rev004_5_1)
+zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) 
 dic004_5_1=dict(zip004_5_1)
 dic004_5_2={}
-""" 以下示例中第一句有效,而第二句运算无效,zip函数必须即写即用(enumerate,map,reversed同理) """
+""" 以下示例中第1句,第2句有效,而第3句,第4句运算无效,zip和enu函数只能以tuple展开或即写即用(enumerate,map,reversed同理) """
 # for k,v in zip(lis004_5_1,lis004_5_2):
-# for k,v in list(zip004_5_1):
+# for k,v in tup004_5_1:
+# for k,v in lis004_5_1z:
+# for k,v in zip004_5_1:
    # dic004_5_2[k]=v
-""" zip函数必须即写即用,所以以下第一句可行,而第二句无效 """
+# print(dic004_5_2)+
+# print(rev004_5_1)
+# print(lis004_5_1r)
+""" zip函数必须即写即用,所以以下第1句可行,而第2句无效 """
 # print(next(zip(lis004_5_1,lis004_5_2)))
 # print(next(zip004_5_1))
 # print(dic004_5_1)
@@ -192,7 +203,8 @@ ite006_1=iter(lis006_1)
 """ 自定义类中使用__iter__()和__next__()内置函数构造迭代器属性,详见自定义类 """
 """ 自定义函数中使用yield关键字,可通过内置循环条件生成可迭代的yield对象,且不占用内存,详见自定义类
    这类自定义函数被称为生成器generator """
-""" 推导式也是生成器: (函数语句 for 变量范围 if 子句) ,小括号()是标识符 """
+""" 推导式可以用于构造生成器,小括号()是标识符: (函数语句 for 变量范围 if 子句) 
+   下例使用中括号[],则生成列表,而非表达式"""
 gen006=(x*y for x in range(3) for y in range(3))
 # print(next(gen006))
 """ for...in 可迭代对象: 循环语句中使用有迭代属性的变量,会自动调用next函数,类似for... in... iter(序列) """
@@ -216,19 +228,22 @@ def fibo(l=100,*m,n=100):
    while b<l+n:
       list_fibo.append(b)
       a,b=b,a+b 
-   print(m)
+   # print(m)
    return list_fibo
 """ 交叉赋值,同时赋值是python特色之一 """
 """ 本例中第3参数n必须使用索引名赋值 """
 # print(fibo(100,n=1))
 """ map函数两个参数,第一个是内嵌函数,后面是内嵌函数所有参数的迭代器,map函数会遍历迭代器,分别代入
    (函数参数不能空,但可以是None,以最短参数序列为准),
-   并按第一个原序列的数据类型和返回值生成一个map对象(不是序列,需要使用格式转换函数如tuple,list变成序列) """
-# map008=map(fibo,[100,200,300],(None,1),(None,None))
+   并按第一个原序列的数据类型和返回值生成一个map对象
+   map对象不是序列,可以用tuple,list,iter展开 """
+map008=map(fibo,[100,200,300],(None,1),(None,None))
+# lis008=list(map008)
 # tup008=tuple(map008)
-# ite008=iter(tup008)
+# ite008=iter(map008)
 # print(next(ite008),next(ite008))
 # print(tup008[0][0:-3:-1])
+# print(lis008)
 """ 模块 """
 """ 只有包含__init__.py模块的文件夹才会被python认定为包,以免识别其他文件 """
 """ 包和模块有两种引入方式,即:import 模块 和 from 模块 import 函数 ;
@@ -245,17 +260,25 @@ fb = fibo
 # print(dir(fb))
 # fb()
 
-""" enumerate函数可以把列表或元组的索引序数和元素成对对应成类似字典键:值的关系的元组,默认从0开始索引 """
+""" enumerate函数可以把列表或元组的索引序数和元素成对对应成类似字典键:值的关系的元组,默认从0开始索引
+   enumerate函数只能用tuple展开或即写即用,类似zip函数 """
 str008_1="asdfgh"
 enu008_1=enumerate(str008_1)
+tup008_1=tuple(enu008_1)
+lis008_1=list(enu008_1)
+ite008_1=iter(enu008_1)
 dic008_1={i:ele for i,ele in enu008_1}
+""" 无法遍历提前生成的enumerate对象,只能即写即用函数结果 """
 # for k,v in enumerate("asdf"):
 #    print(k)
 # for k in enumerate("asdf"):
 #    print(k)
-""" 无法遍历提前生成的enumerate对象,只能遍历语句中的enumerate函数结果 """
-# for k,v in enu008_1:
+
+# for k,v in tup008_1:
+# for k,v in lis008_1:
+# for k,v in ite008_1:
 #    print(k)
+   # print(next(k))
 # for k,v in dic008_1.items():
 #    print(k,v)
 """ lambda 变量1,变量2,变量3... : 表达式 语句用于创建简单的匿名函数,仅可以使用自身参数变量 """
@@ -453,8 +476,8 @@ div = lambda y:1/y
 """ 当使用某个打开后必须要关闭的对象(主要是file对象)时,使用with语句可以简化代码 """
 
 """ 数据分析入门 """
-# import numpy as np 
-# import matplotlib.pyplot as plt 
+import numpy as np 
+import matplotlib.pyplot as plt 
 # import pandas as pd
 # import seaborn as sns
 # import statsmodels as sm
@@ -468,4 +491,48 @@ def isiterable(ele):
 
 # print(isiterable(55))
 # print(isiterable(str(55)))
-
+arr010_0=np.arange(32).reshape(8,4)
+# print(arr010_0)
+""" ndarray是自定义数据类型容器,不是列表,也不是元组,不继承列表和元组方法
+   ndarray的形状遵循由外到内的表示,数轴的顺序0开始,0轴表示最外层维度,(8,4)表示0轴8行,1轴4列的数组 """
+# print(arr010_0.dtype)
+# print(arr010_0.shape)
+""" 使用ndarray.astype方法可以更改ndarray对象的dtype数据类型 """
+arr010_1=arr010_0.astype(np.float64)
+# print(arr010_1.dtype)
+""" ndarray对象切片截取时,是引用传递,所有更改会反映到数据源
+   多维数组的索引以逗号作为标识符区分维度(也可以类似普通序列多个[]多步常规索引),冒号作为头标:尾标:步长的标识符 """
+arr010_1[0:3:2,2:]=0.0000
+# print(arr010_1[0:3:2])
+""" ndarray对象可以使用布尔值进行索引,只有True值会被索引出来 """
+arr010_a = np.array(list("asdf"*2))
+# print(arr010_a)
+# print(arr010_0[arr010_a=="a"])
+""" 波浪符~用于反义操作,两次反义操作得到相同结果 """
+arr010_a_1= arr010_a != "a"
+# print(arr010_0[~arr010_a_1])
+""" 布尔型ndarray中and和or保留字无效,只能使用&和|字符,且条件用小括号间隔开 """
+# print(arr010_0[(arr010_a=="a") | (arr010_a == "f")])
+""" ndarray有T属性和transpose属性两种方式转置 """
+# print(arr010_1.T)
+# print(arr010_1)
+""" 多维函数一般用transpose属性,指定转置轴的位置 """
+# print(arr010_1.transpose(1,0))
+# print(arr010_1)
+""" ndarray的专用np函数称为ufunc,会把计算方式传播给数组内每一个值,ufunc可以设置参数,使其变为引用传递,就地运算 """
+# print(np.sqrt(arr010_1))
+""" np.where(判断式,真值运算,假值运算)函数就是数组的if函数 """
+# print(np.where(arr010_1==0,arr010_0,arr010_1))
+# print(arr010_1)
+""" np.unique函数可以清除重复值 """
+# print(np.unique(np.array(list("asdasdf"))))
+""" np.save函数保存单个ndarray为npy文件,np.load可以加载该文件 """
+""" np.savez保存多个ndarray为一个npy文件,且以类似字典的对象保存 """
+""" np.savez_compressed压缩保存多个ndarray """
+""" 随机漫步示例 """
+# nwalks = 5000
+# nsteps = 1000
+# draws = np.random.randint(0, 2, size=(nwalks, nsteps)) # 0 or 1
+# steps = np.where(draws > 0, 1, -1)
+# walks = steps.cumsum(1)
+# plt.plot(walks[:50])
