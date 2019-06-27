@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+p=print
+""" 狭义的函数和变量的属性都是数值传递,复制运算;变量的方法是引用传递,就地运算 """
 """ 程序 = 数据结构 + 算法,数据结构分3种:排序,判断(选择),循环 """
 """ 递归算法本质是数学归纳法,函数在内部调用自身,即计算第N项与第N-1项的关系,而后一直倒推到第1项,也就是基例
    运用的数据结构其实是栈stack,先堆栈push(放进第一项)后弹出pop(移除最后一项) """
@@ -477,8 +479,9 @@ div = lambda y:1/y
 
 """ 数据分析入门 """
 import numpy as np 
-import matplotlib.pyplot as plt 
-# import pandas as pd
+# import matplotlib.pyplot as plt 
+import pandas as pd
+from pandas import Series as sr,DataFrame as df
 # import seaborn as sns
 # import statsmodels as sm
 """ 自定义isiterable函数以后使用 """
@@ -491,41 +494,45 @@ def isiterable(ele):
 
 # print(isiterable(55))
 # print(isiterable(str(55)))
-arr010_0=np.arange(32).reshape(8,4)
-# print(arr010_0)
+
+""" pandas学习 """
+""" numpy入门 """
+arr101_0=np.arange(32).reshape(8,4)
+# print(arr101_0)
 """ ndarray是自定义数据类型容器,不是列表,也不是元组,不继承列表和元组方法
    ndarray的形状遵循由外到内的表示,数轴的顺序0开始,0轴表示最外层维度,(8,4)表示0轴8行,1轴4列的数组 """
-# print(arr010_0.dtype)
-# print(arr010_0.shape)
+# print(arr101_0.dtype)
+# print(arr101_0.shape)
 """ 使用ndarray.astype方法可以更改ndarray对象的dtype数据类型 """
-arr010_1=arr010_0.astype(np.float64)
-# print(arr010_1.dtype)
+arr101_1=arr101_0.astype(np.float64)
+# print(arr101_1.dtype)
 """ ndarray对象切片截取时,是引用传递,所有更改会反映到数据源
    多维数组的索引以逗号作为标识符区分维度(也可以类似普通序列多个[]多步常规索引),冒号作为头标:尾标:步长的标识符 """
-arr010_1[0:3:2,2:]=0.0000
-# print(arr010_1[0:3:2])
+arr101_1[0:3:2,2:]=0.0000
+# print(arr101_1[0:3:2])
 """ ndarray对象可以使用布尔值进行索引,只有True值会被索引出来 """
-arr010_a = np.array(list("asdf"*2))
-# print(arr010_a)
-# print(arr010_0[arr010_a=="a"])
+arr101_a = np.array(list("asdf"*2))
+# print(arr101_a)
+# print(arr101_0[arr101_a=="a"])
 """ 波浪符~用于反义操作,两次反义操作得到相同结果 """
-arr010_a_1= arr010_a != "a"
-# print(arr010_0[~arr010_a_1])
+arr101_a_1= arr101_a != "a"
+# print(arr101_0[~arr101_a_1])
 """ 布尔型ndarray中and和or保留字无效,只能使用&和|字符,且条件用小括号间隔开 """
-# print(arr010_0[(arr010_a=="a") | (arr010_a == "f")])
+# print(arr101_0[(arr101_a=="a") | (arr101_a == "f")])
 """ ndarray有T属性和transpose属性两种方式转置 """
-# print(arr010_1.T)
-# print(arr010_1)
+# print(arr101_1.T)
+# print(arr101_1)
 """ 多维函数一般用transpose属性,指定转置轴的位置 """
-# print(arr010_1.transpose(1,0))
-# print(arr010_1)
+# print(arr101_1.transpose(1,0))
+# print(arr101_1)
 """ ndarray的专用np函数称为ufunc,会把计算方式传播给数组内每一个值,ufunc可以设置参数,使其变为引用传递,就地运算 """
-# print(np.sqrt(arr010_1))
+# print(np.sqrt(arr101_1))
 """ np.where(判断式,真值运算,假值运算)函数就是数组的if函数 """
-# print(np.where(arr010_1==0,arr010_0,arr010_1))
-# print(arr010_1)
+# print(np.where(arr101_1==0,arr101_0,arr101_1))
+# print(arr101_1)
 """ np.unique函数可以清除重复值 """
 # print(np.unique(np.array(list("asdasdf"))))
+""" 整行或整列作为从参数进行统计分析的函数称为聚合函数(约简函数),以及以特定轴为方向的累积函数 """
 """ np.save函数保存单个ndarray为npy文件,np.load可以加载该文件 """
 """ np.savez保存多个ndarray为一个npy文件,且以类似字典的对象保存 """
 """ np.savez_compressed压缩保存多个ndarray """
@@ -536,3 +543,92 @@ arr010_a_1= arr010_a != "a"
 # steps = np.where(draws > 0, 1, -1)
 # walks = steps.cumsum(1)
 # plt.plot(walks[:50])
+
+""" pandas入门 """
+""" series是dataframe的基本组成单元,即使是dataframe的横向行series,输出时也是纵向显示 """
+""" series和dataframe的索引都是不可变数据类型,只能reindex数值传递(复制运算),不能引用传递(就地运算) """
+""" pandas.Series类似zip函数构造的有序字典,缺省为数字索引,可以由序列或字典构造,其中字典的键会成为索引 """
+""" 当键多于值时,series会复制填充 """
+sr102_1=sr(list("qwer"),index=list("asdf"))
+sr102_2=sr(dict(zip(list("qwer"),list("asdfgh"))))
+# print(sr102_1)
+# print(sr102_2)
+""" series是值参与运算,键只作为索引 """
+# print(sr102_1.values)
+# print(sr102_1.index)
+""" series和pandas的中括号索引都是前闭后闭的索引,容易与python内置索引产生歧义,且索引不唯一,因此尽量用.loc属性索引 """
+# print(sr102_1["a":"f"])
+""" series和pandas运算时都是元素级运算,会根据索引对齐,无法对齐部分,填充为NAN值,即无效值 not a number """
+sr102_3=sr(np.arange(5))
+sr102_4=sr(np.arange(3))
+# print(sr102_3+sr102_4)
+""" ndarray,列表作为df参数,不转置 """
+df102_8=df(np.arange(3).reshape(3,1),index=list("qwe"))
+# p(df102_8)
+df102_9=df(np.arange(3).reshape(1,3),columns=list("asd"))
+# p(df102_9)
+df102_5=df(np.arange(20).reshape(5,4),index=list("qwert"),columns=list("asdf"))
+# p(df102_5)
+df102_10=df([[1,2,3],[4,5,6]],index=list("qw"),columns=list("asd"))
+# p(df102_10)
+df102_12=df(sr102_3,sr102_4)
+# p(df102_12)
+""" 只有字典才会转置为列 """
+df102_11=df({"a":range(3),"s":range(3),"d":range(3)})
+# p(df102_11)
+""" df添加列就是直接赋值新的df列索引,无法对齐的空值会被填充nan """
+df102_5["g"]=sr(range(3),index=list("qwe"))
+# p(df102_5)
+del df102_5["g"]
+# p(df102_5)
+""" 双层嵌套字典构造df,外层字典的键作为列索引,内层字典是行索引 """
+df102_6=df({0:{1:"a",2:"s",3:"f"},4:{1:"q",2:"w",3:"e"}})
+""" df也可以使用.T属性转置 """
+# p(df102_6);p(df102_6.T)
+""" pd的columns和index都是不可变的,一旦初始确定即不再改变,后续只能reindex,所以以下语句错误 """
+# df102_5.columns[0]="z"
+# df102_5.index[0]="x"
+df102_7=df(np.arange(3),index=list("aaa"))
+# p(df102_7[0])
+""" df的中括号[]普通索引只能索引列,不能索引行,索引行和添加行或者定点索引只能使用.loc属性,参数用中括号 """
+# df102_5.loc["q"]=0
+""" 添加行 """
+# df102_5.loc["y","d"]=0
+# df102_5.loc["e":"t","a":"s"]=np.nan
+""" 花式索引是数组索引,中括号[]是花式索引标识符,
+所以不能使用冒号:划出头标尾标进行范围索引,范围索引只能是普通索引 """
+# df102_5.loc[["e","r","t"],["a","s"]]=0
+# p(df102_5)
+""" series和df运算时都会自动对齐,
+   df.apply应用聚合函数,累积函数和一般函数时,代入函数的参数是df的series
+   默认按列代入,默认参数为axis=0(axis="index")传播,可以设置为按axis=1/axis="columns"传播 """
+""" 如果是仅有df自身series作为参数的函数,则axis参数表示迭代的轴方向
+   如果是df和series,或者索引作为参数的方法函数,则axis参数表示series对齐的方向,或是索引查找的方向 """
+df_max=lambda x :x.max()
+df102_5.columns.name="列"
+df102_5.index.name="行"
+# p(df102_5)
+p(df102_5.apply(df_max,axis="index"))
+p(df102_5.apply(df_max,axis=1))
+# p(df102_5.cumsum())
+# p(df102_5.cumsum(axis=1))
+""" 元素级函数使用.applymap方法,常用的numpy元素函数ufunc也可以用于df对象 """
+# p(np.sqrt(df102_5))
+df_fmt=lambda x : "{:f}".format(x)
+# p(df102_5.applymap(df_fmt))
+""" reindex可以重设行索引和列索引排序,会自动创建新旧索引无法对齐的部分
+   且可以通过fill_value参数指定填充值 """
+""" df和df的计算函数,都可以设置fill_value参数 """
+# p(df102_5.reindex(index=list("ytrewq"),fill_value=233))
+""" df和series运算时,默认axis=1 """
+# sr102_5=sr(np.arange(4),index=list("asfg"))
+sr102_5=sr(np.arange(4),index=list("qwey"))
+# p(df102_5.sub(sr102_5))
+p(df102_5.sub(sr102_5,axis=0))
+# p(df102_5.sub(sr102_5,axis=1))
+# p(df102_5+sr102_5)
+""" 按行index方向对齐索引"q",所以axis=0
+   df的属性,默认inplace=False数值传递,复制运算,改为True之后,就地运算 """
+# df102_5.drop("q",axis=0,inplace=True)
+# df102_5.drop("a",axis=1,inplace=False)
+# p(df102_5)
