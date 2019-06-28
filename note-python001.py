@@ -674,12 +674,15 @@ df102_5.drop("q",axis=0,inplace=False)
 # path = os.path.abspath(os.path.dirname(sys.argv[0]))
 # p(path)
 # df102_16=pd.read_csv("d:/notes-python/example/ex1.csv")
-df102_16=pd.read_csv("\ex1.csv")
-# p(df102_16)
-# f1 = open('file1.txt', 'w', encoding='utf-8')
-# f1.write('当前目录？\n')
-# f1.write('true')
-# f1.close()
+""" 相对路径需要将pwd切换到py文件所在文件夹,以本文件为例
+   先 C:\Users\hasee>d:
+   再 D:\>cd notes-python
+   此时python可正常读取相对路径 """
+""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\” 
+   “./”：一个点表示当前目录；（表示当前目录时，也可以去掉“./”，直接写文件名或者下级目录）
+   “../”：两个点表示上级目录。"""
+df102_16=pd.read_csv("example\ex1.csv")
+p(df102_16)
 
 """ 读写Excel """
 
