@@ -98,7 +98,7 @@ set003_3=set("1214")
    键必须是唯一的,而且必须是不可变数据类型(数字或字符串或元组);
    字典的元素是键,遍历时,遍历字典的键,且无序排列,返回顺序不一 """
 """ 字典元素的标识符是冒号:,因此可以用冒号赋值两个元素构造字典 """
-""" 字典常用以下几种方式赋值 """
+""" 字典用大括号{}或dict函数赋值 """
 """ 例1空字典添加 """
 dic004_1={}
 dic004_1["one"]=1
@@ -107,17 +107,19 @@ dic004_1[2]="second"
 """ 例2列表推导式 """
 dic004_3={x:x**y for x in range(1,4) for y in range(1,4)}
 # print(dic004_3)
-""" dict函数的参数可以是成对赋值如例3,或者是元组组成的列表如例4,或者和zip函数嵌套如例5 """
+""" dict函数的参数接受成对赋值如例3,
+   元组组成的序列如例4
+   和zip或enumerate函数嵌套如例5 """
 """ 例3dict函数成对赋值,这种声明方式,键必须是字符串或元组(因为数字无法被赋值) """
-""" 例3中使用变量赋值方式配对,因此不能是 '文本'=数字,这种方式是特殊方式,不常用 """
-dic004_4 = dict(runoob=1,Google =2,淘宝=3)
+""" 例3中配对变量赋值方式, 罕见"""
+dic004_4 = dict(runoob=1,Google=2,淘宝=3)
 # print(dic004_4)
 """ 例4dict函数用成对二元元组作为元素的序列赋值,zip和enumerate函数嵌套都是这类赋值 """
-dic004_2=dict([("雅蠛蝶",233),("stupid",1)])
-# print(dic004_2["雅蠛蝶"])
+dic004_2=dict((("雅蠛蝶",233),("stupid",1)))
+# p(dic004_2)
 """ 例5dict函数和zip函数嵌套赋值 """
 """ python内置的map,zip,reversed,enumerate,sorted函数都是生成器函数,赋值时实际上没有任何运算
-   当返回对象时通过序列转换函数或迭代才会实体化为序列,展开运算
+   必须通过序列转换函数或迭代才会实体化展开为序列
    其中zip和enumerate只能使用tuple函数展开或即写即用,不能使用list和iter函数展开
    迭代使用时必须直接写入句子中,不能赋值为变量再代入,必须把函数直接写入语句中才能产生迭代
    特例: sorted自变量就是生成器,返回值也是生成器,可以直接展开 """
@@ -125,7 +127,7 @@ lis004_5_1=[1,2,3]
 lis004_5_2=["谷歌","淘宝","企鹅","alibaba"]
 tup004_5_3=(3,6,9)
 tup004_5_4=(4,8,12)
-""" zip函数生成一个zip对象,是多元成对元组作为元素的特殊序列 """
+""" zip函数生成一个zip对象,是多元成对元组组成的特殊对象 """
 zip004_5_1=zip(lis004_5_1,lis004_5_2)
 tup004_5_1=tuple(zip004_5_1)
 # lis004_5_1z=list(next(zip004_5_1))
@@ -133,7 +135,8 @@ ite004_5_1=iter(zip004_5_1)
 rev004_5_1=reversed(lis004_5_1)
 lis004_5_1r=list(rev004_5_1)
 zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) 
-dic004_5_1=dict(zip004_5_1)
+dic004_5_1=dict(zip004_5_1) 
+# p(dic004_5_1) #输出为空
 dic004_5_2={}
 """ 以下示例中第1句,第2句有效,而第3句,第4句运算无效,zip和enu函数只能以tuple展开或即写即用(enumerate,map,reversed同理) """
 # for k,v in zip(lis004_5_1,lis004_5_2):
@@ -154,9 +157,19 @@ dic004_5_2={}
 # for x,y,*rest in zip004_5_2:
 #    print(x,y,sep="@",end="\n")
 
-""" zip函数用于把多个列表配对成成对元组作为元素的一维列表,其解压如下 """
+""" zip函数用于把多个列表配对成成对元组作为元素的一维列表,,其解压方式有两种 """
+""" 对于zip对象,zip解压会按照外部维度解压 """
+zip004_5_3=zip(list("asd"),(1,2,3),list("qwe"))
+dic004_5_3={k:0 for k in zip(*zip004_5_3)}
+# p(dic004_5_3)
+""" 对于二维列表或元组,zip会在内部维度垂直解压 """
+zip004_5_4=[list("asd"),(1,2,3),list("qwe")]
+dic004_5_4={k:0 for k in zip(*zip004_5_4)}
+# p(dic004_5_4)
+""" 以下示例也是垂直解压,*rest表示剩余部分 """
 tup004_a,tup004_b,*rest =zip(*(("a",1,3,7),("b",2,6,14),("c",3,9,21)))
 # print(tup004_a,tup004_b,*rest)
+
 """ reversed和sorted函数生成一个新的对象,也就是数值传递 """
 
 """ 判断与循环 """
@@ -335,8 +348,9 @@ feb001_2=feb001(5)
 """ 注释不要打断缩进关系树,如本例中从class下穿和def连接def的纵线 """
 """ 自定义类的外部参数在init函数中赋值,并参与类的方法参与运算 """
 class Vector:
-   """ 自定义类的方法第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
+   """ 自定义类的函数第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
    """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
+   """ 私有方法以双下划线开头__私有名称__双下划线结尾 """
    """ __init__内置属性用于自定义类的初始化,并限定其参数 """
    def __init__(self, a, b):
       self.a = a
@@ -348,7 +362,7 @@ class Vector:
    本例为使用加号运算符 """
    def __add__(self,other):
       return Vector(self.a + other.a, self.b + other.b)
-   """ self参数代表的是类的实例(也即是变量),而非类本身 """
+   """ self参数代表的是类的实例(也就是变量),而非类本身 """
    def prt(self):
       print(self)
       print(self.__class__)
@@ -396,7 +410,7 @@ ite008_1=iter(cls001)
 """ 自定义子类可以同时继承多个父类的函数,如果子类的自定义函数与父类相同,则子类的函数覆盖父类,
    多继承的父类函数重名时,默认继承括号内排前的父类函数
    super函数可以调用子类的父类同名函数 """
-""" 以下示例中展示了format函数的和字典对象的联用,format函数和序列对象的联用 """
+""" 以下示例中展示了format函数的和字典参数的联用,format函数和列表参数的联用 """
 class people:
     #定义基本属性
     name = ''
@@ -430,7 +444,8 @@ class speaker():
         self.properties008={"q":self.name,"w":self.topic,"e":self.age}
     def speak(self):
         print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
-""" 由于大括号{}内的索引返回的是带括号的文本,所以上例中字典无法以数字作为键来进行索引 """
+""" 由于文本.format函数文本中大括号{}内的索引返回的是带括号的文本,所以上例中字典无法以数字作为键来进行索引 """
+""" 此处使用双**号使参数以字典的形式引入函数中 """
 class sample(student,speaker):
 # 切换不同顺序则父类不同
 # class sample(speaker,student):
@@ -439,8 +454,8 @@ class sample(student,speaker):
         student.__init__(self,n,a,w,g)
         speaker.__init__(self,n,t,a)
 test = sample("Tim",25,80,4,"Python")
-""" 方法名同，默认调用的是在括号中排前地父类的方法 """
-# test.speak()
+""" 方法名同，默认调用的是在括号中排前的父类的方法 """
+test.speak()
 """ super函数第一个参数是变量的子类,第二个参数是变量,使用后返回一个以子类参数为参数的父类对象 """
 # super(sample,test).speak()
 
@@ -491,6 +506,28 @@ def isiterable(ele):
       return True
    except TypeError:
       return False
+
+""" 番外篇:装饰器 """
+""" 装饰器用于在不改变已有函数内部结构的前提下,把原函数作为参数嵌套进装饰器函数中,函数原地重命名 """
+""" 装饰器函数必须闭包,所以1.装饰器必须内嵌函数,2.return内嵌函数3.return内嵌函数不加括号 """
+def greet001(f):
+   def greet002():
+      p("Hello!",end=" ")
+      f()
+   return greet002
+"""  """
+def self_introduce001(a="彭义灿"):
+   p("My name is {}".format(a))
+
+""" 不使用语法糖,则相当于外套函数原地赋值 """
+""" 括号内是函数名,不是运行self_introduce001函数,因此不能加括号 """
+self_introduce001=greet001(self_introduce001)
+self_introduce001()
+""" 使用语法糖只是简化代码书写的技巧,不是装饰器的实质 """
+@greet001
+def self_introduce002(a="彭义灿"):
+   print("My name is {}".format(a))
+self_introduce002()
 
 # print(isiterable(55))
 # print(isiterable(str(55)))
@@ -674,17 +711,40 @@ df102_5.drop("q",axis=0,inplace=False)
 # path = os.path.abspath(os.path.dirname(sys.argv[0]))
 # p(path)
 # df102_16=pd.read_csv("d:/notes-python/example/ex1.csv")
-""" 相对路径需要将pwd切换到py文件所在文件夹,以本文件为例
-   先 C:\Users\hasee>d:
-   再 D:\>cd notes-python
-   此时python可正常读取相对路径 """
-""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\” 
+r""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\” 
    “./”：一个点表示当前目录；（表示当前目录时，也可以去掉“./”，直接写文件名或者下级目录）
    “../”：两个点表示上级目录。"""
-df102_16=pd.read_csv("example\ex1.csv")
-p(df102_16)
+""" nrow参数设置读取行 """
+# df102_16=pd.read_csv("example/ex1.csv",nrows=2)
+# p(df102_16)
+import csv
+""" csv.reader是成行读取csv文件 """
+""" zip(*values)是把values垂直解压 """
+# with open("example/ex7.csv") as f102_17:
+   # csv102_17=csv.reader(f102_17)
+   # lines=list(csv102_17)
+   # header,values = lines[0],lines[1:]
+   # p(header)
+   # p(values)
+   # data_dict={k:v for k,v in zip(header,values)}
+   # data_dict={k:v for k,v in zip(header,zip(*values))}
+   # p(repr(zip(*values)))
+   # df102_17=df(data_dict)
+   # p(df102_17)
 
 """ 读写Excel """
-
+""" 先利用路径创建Excel实例,再通过read_excel读取 """
+# exc102_18=pd.ExcelFile('example/ex1.xlsx')
+""" 读取多个sheet时,sheet名称用中括号包围(不能用小括号) """
+# df102_18=pd.read_excel(exc102_18,['example1','example2'])
+# p(df102_18)
 
 """ 读写MySQL """
+# import mysql.connector
+# myconn=mysql.connector.connect(host='localhost',user='root',password='1234',database='runoob')
+# mycursor=myconn.cursor()
+# rows=mycursor.execute('select * from tb1')
+# for x in mycursor:
+#    p(x)
+# mycursor.close
+# myconn.close
