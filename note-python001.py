@@ -455,7 +455,7 @@ class sample(student,speaker):
         speaker.__init__(self,n,t,a)
 test = sample("Tim",25,80,4,"Python")
 """ 方法名同，默认调用的是在括号中排前的父类的方法 """
-test.speak()
+# test.speak()
 """ super函数第一个参数是变量的子类,第二个参数是变量,使用后返回一个以子类参数为参数的父类对象 """
 # super(sample,test).speak()
 
@@ -508,26 +508,29 @@ def isiterable(ele):
       return False
 
 """ 番外篇:装饰器 """
+""" 带参数装饰器待解 """
 """ 装饰器用于在不改变已有函数内部结构的前提下,把原函数作为参数嵌套进装饰器函数中,函数原地重命名 """
 """ 装饰器函数必须闭包,所以1.装饰器必须内嵌函数,2.return内嵌函数3.return内嵌函数不加括号 """
-def greet001(f):
-   def greet002():
-      p("Hello!",end=" ")
-      f()
-   return greet002
+""" 本例中通过添加*和**,使得装饰器可以装饰在有任意类型参数的函数上 """
+def greet001(b="王凤"):   
+   def middle(f):
+      def inner(*x,**y):
+         p("Hello",b,sep=",",end="!\n")
+         f(*x,**y)
+      return inner
+   return middle
 """  """
 def self_introduce001(a="彭义灿"):
    p("My name is {}".format(a))
 
 """ 不使用语法糖,则相当于外套函数原地赋值 """
-""" 括号内是函数名,不是运行self_introduce001函数,因此不能加括号 """
-self_introduce001=greet001(self_introduce001)
-self_introduce001()
+""" 括号内是函数名,不是运行self_introduce001函数,此处有bug待解 """
+# greet001("Orris")
 """ 使用语法糖只是简化代码书写的技巧,不是装饰器的实质 """
-@greet001
+@greet001("Ethan")
 def self_introduce002(a="彭义灿"):
    print("My name is {}".format(a))
-self_introduce002()
+# self_introduce002("Orris")
 
 # print(isiterable(55))
 # print(isiterable(str(55)))
@@ -590,7 +593,8 @@ arr101_a_1= arr101_a != "a"
 
 """ pandas入门 """
 """ series是dataframe的基本组成单元,即使是dataframe的横向行series,输出时也是纵向显示 """
-""" series和dataframe的索引都是不可变数据类型,只能reindex数值传递(复制运算),不能引用传递(就地运算) """
+""" series和dataframe的索引都是不可变数据类型,只能reindex数值传递(复制运算) """
+""" series和dataframe的对齐功能,类似数据库的join,根据键进行匹配 """
 """ pandas.Series函数类似zip函数构造的有序字典,缺省则为数字索引,可以接受序列或字典,其中字典的键会成为索引 """
 """ 当键多于值时,series会复制填充 """
 sr102_1=sr(list("qwer"),index=list("asdf"))
@@ -635,7 +639,8 @@ df102_6=df({0:{1:"a",2:"s",3:"f"},4:{1:"q",2:"w",3:"e"}})
 # df102_5.index[0]="x"
 df102_7=df(np.arange(3),index=list("aaa"))
 # p(df102_7[0])
-""" df的中括号[]普通索引只能索引列,不能索引行,索引行和添加行或者定点索引只能使用.loc属性,.loc是索引,所以参数用中括号[] """
+""" df的中括号[]普通索引只能索引列,不能索引行,索引行和添加行或者定点索引只能使用.loc属性,.loc是索引,
+   所以参数用中括号[],.loc和.iloc截取是前闭后开区间,与python普通索引方法一致 """
 # df102_5.loc["q"]=0
 """ 添加行 """
 # df102_5.loc["y","d"]=0
