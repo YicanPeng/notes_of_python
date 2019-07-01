@@ -218,8 +218,8 @@ ite006_1=iter(lis006_1)
 """ 自定义类中使用__iter__()和__next__()内置函数构造迭代器属性,详见自定义类 """
 """ 自定义函数中使用yield关键字,可通过内置循环条件生成可迭代的yield对象,且不占用内存,详见自定义类
    这类自定义函数被称为生成器generator """
-""" 推导式可以用于构造生成器,小括号()是标识符: (函数语句 for 变量范围 if 子句) 
-   下例使用中括号[],则生成列表,而非表达式"""
+""" 推导式可以用于构造生成器推导式,小括号()是生成器标识符: (函数语句 for 变量范围 if 子句) 
+   下例使用中括号[],则生成列表,而非生成器"""
 gen006=(x*y for x in range(3) for y in range(3))
 # print(next(gen006))
 """ for...in 可迭代对象: 循环语句中使用有迭代属性的变量,会自动调用next函数,类似for... in... iter(序列) """
@@ -252,6 +252,7 @@ def fibo(l=100,*m,n=100):
    (函数参数不能空,但可以是None,以最短参数序列为准),
    并按第一个原序列的数据类型和返回值生成一个map对象
    map对象不是序列,可以用tuple,list,iter展开 """
+""" map函数常与lambda隐函数联用 """
 map008=map(fibo,[100,200,300],(None,1),(None,None))
 # lis008=list(map008)
 # tup008=tuple(map008)
@@ -720,6 +721,9 @@ df102_5.drop("q",axis=0,inplace=False)
 r""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\” 
    “./”：一个点表示当前目录；（表示当前目录时，也可以去掉“./”，直接写文件名或者下级目录）
    “../”：两个点表示上级目录。"""
+""" 本例需要把pwd转移至本py文件所在文件夹才能使用相对路径
+   先在终端中输入:d,切换盘符
+   再cd notes-python转至目标文件夹 """
 """ nrow参数设置读取行 """
 # df102_16=pd.read_csv("example/ex1.csv",nrows=2)
 # p(df102_16)
@@ -737,14 +741,12 @@ import csv
    # p(repr(zip(*values)))
    # df102_17=df(data_dict)
    # p(df102_17)
-
 """ 读写Excel """
 """ 先利用路径创建Excel实例,再通过read_excel读取 """
 # exc102_18=pd.ExcelFile('example/ex1.xlsx')
 """ 读取多个sheet时,sheet名称用中括号包围(不能用小括号) """
 # df102_18=pd.read_excel(exc102_18,['example1','example2'])
 # p(df102_18)
-
 """ 读写MySQL """
 # import mysql.connector
 # myconn=mysql.connector.connect(host='localhost',user='root',password='1234',database='runoob')
@@ -754,3 +756,22 @@ import csv
 #    p(x)
 # mycursor.close
 # myconn.close
+
+""" 数据清洗与转换 """
+""" 处理缺失值 """
+""" 滤除缺失值dropna方法 """
+""" 填充缺失值fillna方法 
+    fillna可以接受series参数 """
+""" 数据转换 """
+""" 移除重复数据duplicated属性,drop_duplicates方法 """
+""" 利用函数或映射转换数据series.map方法和pd.applymap方法 """
+""" 替换值replace方法,接受单一值,列表参数,字典参数 """
+""" 重命名索引rename方法,接受列表参数和字典参数 """
+""" 离散化和面元划分 """
+""" cut和qcut方法,默认前闭后开切断 """
+""" 检测和转换异常值.any方法和np.sign函数 """
+""" 随机重排序np.random.permuting函数和.take方法,随机采样.sample方法(不重复replace=False) """
+""" 哑变量pd.get_dummies函数 """
+""" 字符串操作split,strip,字符串.join,find,index,字符串.replace """
+""" 正则表达式 """
+""" 矢量化字符串函数,即判断以series为整体进行文本运算 """
