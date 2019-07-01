@@ -508,7 +508,6 @@ def isiterable(ele):
       return False
 
 """ 番外篇:装饰器 """
-""" 带参数装饰器待解 """
 """ 装饰器用于在不改变已有函数内部结构的前提下,把原函数作为参数嵌套进装饰器函数中,函数原地重命名 """
 """ 装饰器函数必须闭包,所以1.装饰器必须内嵌函数,2.return内嵌函数3.return内嵌函数不加括号 """
 """ 本例中通过添加*和**,使得装饰器可以装饰在有任意类型参数的函数上 """
@@ -521,15 +520,17 @@ def greet001(b="王凤"):
    return middle
 """  """
 def self_introduce001(a="彭义灿"):
-   p("My name is {}".format(a))
+   p("My name is {}!".format(a))
 
 """ 不使用语法糖,则相当于外套函数原地赋值 """
-""" 括号内是函数名,不是运行self_introduce001函数,此处有bug待解 """
-# greet001("Orris")
+""" 第二个括号内是函数名作为参数,不是运行self_introduce001函数;
+   向自定义函数内嵌函数传递参数,通过第二个括号完成 """
+self_introduce001=greet001("Orris")(self_introduce001)
+# self_introduce001("Ethan")
 """ 使用语法糖只是简化代码书写的技巧,不是装饰器的实质 """
 @greet001("Ethan")
 def self_introduce002(a="彭义灿"):
-   print("My name is {}".format(a))
+   print("My name is {}!".format(a))
 # self_introduce002("Orris")
 
 # print(isiterable(55))
