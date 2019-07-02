@@ -298,6 +298,9 @@ dic008_1={i:ele for i,ele in enu008_1}
 # for k,v in dic008_1.items():
 #    print(k,v)
 """ lambda 变量1,变量2,变量3... : 表达式 语句用于创建简单的匿名函数,仅可以使用自身参数变量 """
+""" lambda函数注意与推导式区分,lambda函数变量在前,冒号连接,表达式在后
+   推导式表达式在前,for 定义域在后 """
+"""列表推导式语句:[表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2] """
 sm = lambda x,y,z : x+y+z
 """ lambda也可以用于柯里化currying一个已有函数,固定其中某个参数,以生成新函数 """
 sm_1=lambda x : sm(1,1,x)
@@ -759,18 +762,92 @@ import csv
 
 """ 数据清洗与转换 """
 """ 处理缺失值 """
+""" df.isnull和df.notnull检测缺失值 """
 """ 滤除缺失值dropna方法 """
+df102_19=df([[1., 6.5, 3.], [1., np.nan, np.nan],[np.nan, np.nan, np.nan], [np.nan, 6.5, 3.]])
+""" df.dropna默认how='any',删除任何有无效值的行,可以通过设置how='all'指定 """
+# p(df102_19)
+# p(df102_19.isnull())
+# p(df102_19[df102_19>1])
+# p(df102_19.dropna(how="all"))
+# df102_19[3]=np.nan
+""" 指定删除列 """
+# p(df102_19)
+# p(df102_19.dropna(1,"all"))
 """ 填充缺失值fillna方法 
     fillna可以接受series参数 """
+""" 可以设置inplace参数=True就地运算 """
+# p(df102_19.fillna("a"))
+""" fillna可以接受字典参数,对指定列填充不同值 """
+# p(df102_19.fillna({0:"x",1:"y",2:"z"}))
+""" fillna接受series参数 """
+sr102_19=df102_19.mean(axis=1)
+# p(sr102_19)
+""" fillna只能axis=0,不能axis=1 """
+# p(df102_19.fillna(sr102_19))
+""" method参数设置向前填充,limit参数设置填充个数 """
+# p(df102_19.fillna(method="ffill",limit=1))
 """ 数据转换 """
 """ 移除重复数据duplicated属性,drop_duplicates方法 """
-""" 利用函数或映射转换数据series.map方法和pd.applymap方法 """
+df102_20=df({'k1': ['one', 'two'] * 3 + ['two'], 'k2': [1, 1, 2, 3, 3, 4, 4]})
+# p(df102_20)
+# p(df102_20.duplicated())
+""" drop_duplicates,缺省是全列比对重复,可以设置比对列,keep参数默认保存第一个重复项或指定最后一个重复项 """
+# p(df102_20.drop_duplicates())
+# p(df102_20.drop_duplicates('k2',keep='last'))
+""" 利用函数或映射转换数据series.map方法 """
+dic102_20={1:'q',2:'w',3:"e",4:'r'}
+# df102_20["k3"]=df102_20['k2'].map(dic102_20)
+""" map函数与lambda联用 """
+# df102_20['k2']=df102_20['k2'].map(lambda x: dic102_20[x])
+# p(df102_20)
 """ 替换值replace方法,接受单一值,列表参数,字典参数 """
-""" 重命名索引rename方法,接受列表参数和字典参数 """
+# p(df102_20.replace([1,2],'q'))
+# p(df102_20.replace([1,2],list('qw')))
+# p(df102_20.replace({1:'q',2:'w',3:'e'}))
+""" df.rename方法重置索引,接受字典参数 """
+# p(df102_20.rename(columns={'k1':8}))
+""" 特定文本函数,待解 """
+# p(df102_20.rename(columns=str.upper))
+""" df数据的索引无法单个索引修改,只能整体替换 """
+# df102_20.index=df102_20.index.map(lambda x : x**3)
+# p(df102_20)
 """ 离散化和面元划分 """
-""" cut和qcut方法,默认前闭后开切断 """
-""" 检测和转换异常值.any方法和np.sign函数 """
-""" 随机重排序np.random.permuting函数和.take方法,随机采样.sample方法(不重复replace=False) """
+""" pd.cut和pd.qcut函数,默认前开后闭,可以设置right=false改为前闭后开 """
+# lis102_21 = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
+# bin102_21=[0,25,30,35,50,100]
+""" pd.cut返回值是一个categorical对象,可以视作由分类标签labels构成的字符串 """
+# ct102_21_1=pd.cut(lis102_21,bin102_21,labels=list('qwert'))
+# p(ct102_21_1)
+# p(ct102_21_1.codes)
+""" pd.value_counts函数返回各个面元的数据数量 """
+# p(pd.value_counts(ct102_21_1))
+""" 如果输入的是分割段数,则会按最值均分所有数据,precision=2小数点后保留两位,right=false前闭后开 """
+# ct102_21_2=pd.cut(lis102_21,4,precision=2,right=False)
+# p(ct102_21_2)
+""" pd.qcut按最大最小值进行分数分割,保证每段元素个数相同 """
+# qct102_21_1=pd.qcut(lis102_21,3,precision=1)
+# p(qct102_21_1)
+""" 分段参数设为0-1的小数,即可控制分位点 """
+# qct102_21_2=pd.qcut(lis102_21,[0,0.3,0.7,0.9,1],precision=1)
+# p(qct102_21_2)
+""" 检测和转换异常值.any方法 """
+# df102_22=df(np.random.randn(1000,4))
+# p(df102_22.describe())
+# df102_22_1=df102_22[(np.abs(df102_22)>3).any(1)]
+# p(df102_22_1)
+""" np.sign函数把负数转为-1,正数转为1,0转为0,nan转为nan,可以用此函数转换超出正常值的数值 """
+# p(np.sign(df102_22))
+""" 随机重排序np.random.permuting函数和.take方法;随机采样.sample方法(不重复replace=False) """
+df102_23=df(np.arange(5*4).reshape(5,4))
+# slt102_23_1=np.random.permutation(4)
+# p(df102_23)
+# p(df102_23.take(slt102_23_1,axis=1))
+# p(df102_23.loc[:,slt102_23_1])
+# p(df102_23.reindex(columns=slt102_23_1))
+""" df.sample和series.sample方法抽样,默认不重复抽取相同样;超出总体数量本,可以开启重复抽样 """
+# p(df102_23.sample(n=2))
+# p(df102_23.sample(n=7,replace=True))
 """ 哑变量pd.get_dummies函数 """
 """ 字符串操作split,strip,字符串.join,find,index,字符串.replace """
 """ 正则表达式 """
