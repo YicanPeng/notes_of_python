@@ -298,7 +298,8 @@ dic008_1={i:ele for i,ele in enu008_1}
 # for k,v in dic008_1.items():
 #    print(k,v)
 """ lambda 变量1,变量2,变量3... : 表达式 语句用于创建简单的匿名函数,仅可以使用自身参数变量 """
-""" lambda函数注意与推导式区分,lambda函数变量在前,冒号连接,表达式在后
+""" lambda函数注意与推导式区分:
+   lambda函数自变量参数在前,冒号连接,表达式在后
    推导式表达式在前,for 定义域在后 """
 """列表推导式语句:[表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2] """
 sm = lambda x,y,z : x+y+z
@@ -768,7 +769,7 @@ df102_19=df([[1., 6.5, 3.], [1., np.nan, np.nan],[np.nan, np.nan, np.nan], [np.n
 """ df.dropna默认how='any',删除任何有无效值的行,可以通过设置how='all'指定 """
 # p(df102_19)
 # p(df102_19.isnull())
-# p(df102_19[df102_19>1])
+# p(arr102_19)
 # p(df102_19.dropna(how="all"))
 # df102_19[3]=np.nan
 """ 指定删除列 """
@@ -783,7 +784,7 @@ df102_19=df([[1., 6.5, 3.], [1., np.nan, np.nan],[np.nan, np.nan, np.nan], [np.n
 """ fillna接受series参数 """
 sr102_19=df102_19.mean(axis=1)
 # p(sr102_19)
-""" fillna只能axis=0,不能axis=1 """
+""" fillna只接受axis=0,不能axis=1(同一列的函数才意义相同,不同列无法比较) """
 # p(df102_19.fillna(sr102_19))
 """ method参数设置向前填充,limit参数设置填充个数 """
 # p(df102_19.fillna(method="ffill",limit=1))
@@ -848,7 +849,78 @@ df102_23=df(np.arange(5*4).reshape(5,4))
 """ df.sample和series.sample方法抽样,默认不重复抽取相同样;超出总体数量本,可以开启重复抽样 """
 # p(df102_23.sample(n=2))
 # p(df102_23.sample(n=7,replace=True))
-""" 哑变量pd.get_dummies函数 """
+""" 哑变量pd.get_dummies函数,把定性的一维数据转化为布尔型矩阵的方法 """
+# df102_24=df({'k':['q','w','e','q','w','q'],'v':[1,2,3,1,2,3]})
+# dummies=pd.get_dummies(df102_24['k'],prefix='key')
+""" 此处双中括号不用单括号原因待解 """
+# df_join_dummies=df102_24[['v']].join(dummies)
+# p(df102_24)
+# p(df_join_dummies)
+""" 哑变量常与pd.cut和pd.qcut等离散化函数联用,完成统计 """
+# np.random.seed(10225)
+# arr102_25=np.random.rand(10)
+# bin102_25=[0,0.2,0.4,0.6,0.8,1]
+# df_ct_dum=pd.get_dummies(pd.cut(arr102_25,bins=bin102_25,labels=list('qwert')))
+# p(df_ct_dum)
 """ 字符串操作split,strip,字符串.join,find,index,字符串.replace """
+# str102_26='q,we,  git  '
+# lis102_26_1=str102_26.split(',')
+# p(lis102_26_1)
+# lis102_26_2=[s.strip() for s in lis102_26_1]
+# p(lis102_26_2)
+# str102_26_1=":".join(lis102_26_2)
+# p(str102_26_1)
+""" 判断字符存在常用函数,其中字符串.index查找不存在的字符时,会返回error,而字符串.find会返回-1 """
+# p("git" in lis102_26_2)
+# p(str102_26_1.index('git'))
+# p(str102_26_1.find(','))
+""" 替换字符 """
+# p(str102_26.replace(',','::'))
 """ 正则表达式 """
+""" re模块可以指定compile生成regexp对象用于大批量字符串处理,本笔记只举一例 """
+# import re
+# text102_27 = "foo    bar\t baz  \tqux"
+# text102_27_1=re.split('\s+',text102_27)
+# p(text102_27_1)
+r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空白符(空白符包括空格,换行符,制表符等)
+   regexp.findall方法返回所有匹配正则表达式的字符串,与此类似的search方法只返回第一个,而match方法只匹配字符串首部 """
+# regexp102_27=re.compile('\s+')
+# text102_27_2=regexp102_27.split(text102_27)
+# text102_27_3=regexp102_27.findall(text102_27)
+# text102_27_4=regexp102_27.sub('///',text102_27)
+# p(text102_27_2)2
+# p(text102_27_3)
+# p(text102_27_4)
 """ 矢量化字符串函数,即判断以series为整体进行文本运算 """
+""" 由于.map和.applymap方法应用于nan值时会报错,因此有一系列针对series跳过nan的方法,通过series.str属性访问 """
+# sr102_28 =sr({'Dave': 'dave@google.com', 'Steve': 'steve@gmail.com','Rob': 'rob@gmail.com', 'Wes': np.nan})
+""" .str.contains查找字符 """
+# p(sr102_28.str.contains('google'))
+""" .str.get或.str[]索引指定字符 """
+# p(sr102_28.str.get(3))
+# p(sr102_28.str[3])
+
+""" 数据规整:聚合,合并与重塑 """
+""" 层次化索引 """
+""" 重排与分级排序 """
+""" 根据级别汇总统计 """
+""" 把列转换为索引 """
+""" 合并数据集 """
+""" 数据库风格的df合并pd.merge """
+""" 索引上的合并df.join """
+""" 轴向连接df.combine_first """
+""" 合并重叠数据 """
+""" 重塑和轴向旋转 """
+""" 重塑层次化索引 .stack和.unstack"""
+""" 长格式转为宽格式pivot """
+""" 宽格式转为长格式pivot """
+
+""" 数据聚合与分组运算 """
+
+""" 时间序列 """
+
+""" 绘图和可视化 """
+
+""" pandas高级应用 """
+
+""" 数据分析案例 """
