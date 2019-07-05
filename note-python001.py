@@ -672,6 +672,12 @@ def self_introduce001(a="彭义灿"):
       series与pd运算时,series与选定的axis平行 """
 # pd和numpy采用了不同的axis思路
 """ 聚合函数,.apply方法和与series的广播运算,.fillna中,axis表示运算方向(按axis作为一个整体执行运算),在.drop和.dropna中,axis表示查找方向 """
+""" pd中sr永远输出为纵向,但是对齐只看下标,不看维度,;每次运算,axis=0列索引先取参数或构成外循环,行索引构成内循环,外循环输出为结果
+   以pd.sum为例,外循环0列:0行1行sum输出为一个值;1列,2列依次外循环,最终输出结果为外循环每列的sum
+   以pd.sub(sr)为例,外循环0列:0行1行与sr的0,1依次对齐运算,sr的2无法对齐输出nan,三个数值输出为一个sr,外循环成列
+   以pd.apply为例,外循环0列:列作为sr代入函数求得max,输出为一个值,最终输出为各列的max
+   以pd.drop([0])为例,外循环0列:内循环删除行索引为0的元素;依次循环1列,2列,得到最终删除(0,0),(0,1),(0,2)的结果
+   由以上推断得出,axis指定外循环的方向,而内循环根据指定参数进行对齐运算 """
 # df_max=lambda x :x.max()
 # df102_13=df([[1,2,3],[2,4,6]])
 # df102_14=df([[1,2],[3,4]])
@@ -979,14 +985,71 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(df108_6)
 
 """ 索引上的合并pd.merge和df.join """
-""" pd.merge可以指定索引合并 """
-""" 也可以使用df.join方法实现索引合并 """
-""" 轴向连接df.combine_first """
-""" 合并重叠数据 """
+""" pd.merge可以指定按索引对齐合并或者索引与列混合对齐(right_index和left_on混用) """
+# df108_7=pd.merge(df108_4,df108_5,left_index=True,right_index=True,how='inner')
+# p(df108_7)
+# df108_8=df108_4.set_index(['k1','k2'])
+# df108_9=df108_5.set_index(['k1','k3'])
+# df108_10=pd.merge(df108_8,df108_5,right_on=['k1','k3'],left_index=True,how='inner')
+# df108_11=pd.merge(df108_8,df108_9,right_index=True,left_index=True)
+# p(df108_8)
+# p(df108_5)
+# p(df108_10)
+# p(df108_9)
+# p(df108_11)
+""" 使用df.join方法实现索引合并,可以同时合并多个df """
+# df108_12=df(np.arange(12).reshape((4,3)),index=list('qwer'))
+# df108_13=df(np.arange(12).reshape((3,4)),index=list('qwt'))
+""" 重名的列需要添加suffix参数重命名 """
+# df108_14=df108_12.join(df108_13,how='outer',lsuffix='_left',rsuffix='_right')
+# p(df108_14)
+""" 轴向连接np.concatenate和pd.concat """
+# arr108_15=np.arange(12).reshape(4,3)
+# p(np.concatenate([arr108_15,arr108_15]))
+# p(np.concatenate([arr108_15,arr108_15],axis=1))
+# sr108_16_1=sr([0,1],index=list('qw'))
+# sr108_16_2=sr([2,3,4],index=list('qrt'))
+# sr108_16_3=sr([5,6],index=list('er'))
+""" axis=1表示合并轴,由于sr是纵向轴,所以一维sr在横向合并时,通过对齐成为二维pd;此处join_axes参数必须使用双中括号[[]] """
+""" sr的二维合并时,keys参数自动成为列索引 """
+# p(pd.concat([sr108_16_1,sr108_16_2,sr108_16_3],axis=1,join_axes=[list('qwrt')],join='inner',keys=['k1','k2','k3']))
+""" axis=0,可以设置keys参数,添加层次化索引 """
+# p(pd.concat([sr108_16_1,sr108_16_2,sr108_16_3],keys=['k1','k2','k3']))
+""" pd的合并可以设置ignore_index参数丢弃合并轴方向的索引 """
+# df108_17_1=df(np.arange(12).reshape((4,3)),index=list('qwer'),columns=list('asd'))
+# p(pd.concat([df108_17_1,df108_17_1],axis=0,ignore_index=False,keys=['lev1','lev2']))
+# p(pd.concat([df108_17_1,df108_17_1],axis=1,ignore_index=True))
+""" 合并重叠数据sr.combine_first和df.combine_first """
+""" .combine_first方法用于合并存在相同值的两个sr或pd,参数有义值填充nan;重叠元素,对象覆盖参数 """
+# df108_18_1 = df({'a': [1., np.nan, 5., np.nan],'b': [np.nan, 2., np.nan, 6.],'c': range(2, 18, 4)})
+# df108_18_2 = df({'a': [5., 4., np.nan, 3., 7.],'b': [np.nan, 3., 4., 6., 8.]})
+# p(df108_18_1)
+# p(df108_18_2)
+# p(df108_18_1.combine_first(df108_18_2))
 """ 重塑和轴向旋转 """
+""" .stack和.unstack是根据索引进行维度变换 """
 """ 重塑层次化索引 .stack和.unstack"""
-""" 长格式转为宽格式pivot """
-""" 宽格式转为长格式pivot """
+""" .stack用于把pd二维表降维成一维表sr,所有的列都会变成索引 """
+# df108_19=df(np.arange(6).reshape((2,3)),index=pd.Index(list('qw'),name='row_index'),columns=pd.Index(list('asd'),name='col_index'))
+# sr108_19=df108_19.stack()
+# p(df108_19)
+# p(sr108_19)
+""" .unstack就是对pd和sr根据行索引index进行升维,指定的行索引会成为最低级的列索引 """
+# df108_20=df({'z':sr108_19,'x':sr108_19+5},columns=pd.Index(list('zx'),name='k'))
+# p(df108_20)
+# p(df108_20.unstack('row_index'))
+# p(df108_20.unstack(1))
+""" df.pivot和pd.melt是根据列进行维度变换 """
+""" 长格式转为宽格式(一维表透视为二维表)df.pivot """
+""" 宽格式转为长格式(二维表逆透视为一维表)pd.melt """
+# df108_25=df({'z':[0,1,2],'x':[3,4,5],'c':[6,7,8],'k':list('qwe')})
+""" pd.melt中id_vars指定转为次级行索引的列(可以通过reset_index方法转为列),value_vars指定数值列,variable是自动生成的索引辅助列,value是自动生成的一维值列 """
+# df108_25_m=pd.melt(df108_25,id_vars=['x'],value_vars=['z','k'])
+""" df.pivot中index指定转为行索引的列(可以通过reset_index方法转为列),columns指定转为列索引的列,values指定数值列 """
+# df108_25_m_p=df108_25_m.pivot(index='variable',columns='x',values=['value']).reset_index(0)
+# p(df108_25)
+# p(df108_25_m)
+# p(df108_25_m_p)
 
 """ 数据聚合与分组运算 """
 """ groupby机制 """
