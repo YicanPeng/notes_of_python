@@ -936,9 +936,10 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # sr108_1=sr(np.random.randn(9),index=[list("qqqwweerr"),[1,2,3,1,3,1,2,2,3]])
 # p(sr108_1)
 # p(sr108_1.index)
-""" 层次化索引更简单,常规索引需要排序后才能截取,且索引排序需要指定level """
+""" 层次化索引更简单,常规索引需要排序后才能切片,且索引排序需要指定level """
 # sr108_1_1=sr108_1.sort_index(level=0)
-# p(sr108_1_1['e':"r"])
+""" 层次化索引的不同层级用小括号()作为一个整体索引 """
+# p(sr108_1_1[('e',2):'r'])
 # p(sr108_1.loc[:,2])
 # p(sr108_1.loc[['q','w']])
 """ unstack把一维series逆透视为二维df,二级索引作为行标题 """
@@ -1027,8 +1028,8 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(df108_18_2)
 # p(df108_18_1.combine_first(df108_18_2))
 """ 重塑和轴向旋转 """
-""" .stack和.unstack是根据索引进行维度变换 """
-""" 重塑层次化索引 .stack和.unstack"""
+""" df.stack和df.unstack是根据索引进行维度变换 """
+""" 重塑层次化索引 df.stack和df.unstack"""
 """ .stack用于把pd二维表降维成一维表sr,所有的列都会变成索引 """
 # df108_19=df(np.arange(6).reshape((2,3)),index=pd.Index(list('qw'),name='row_index'),columns=pd.Index(list('asd'),name='col_index'))
 # sr108_19=df108_19.stack()
@@ -1053,17 +1054,93 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 
 """ 数据聚合与分组运算 """
 """ groupby机制 """
-""" 对分组进行迭代 """
+""" df.groupby生成的是可迭代的group对象,全部是二元元组,需要用函数(常用list)才能实例化,实例化后可以以此生成字典 """
+""" df.groupby指定的分组依据会成为新df的索引 """
+# df110_1=df({'k1':list('qqwwq'),'k2':list('asasa'),'v1':np.arange(5),'v2':np.arange(5)+5})
+# p(df110_1.sort_values(by='k1'))
+""" 也可以指定df外能与df索引对齐的series成为分组依据,所以by参数必须指明df切片 """
+# sr110_1=sr(list('zzxxxx'))
+# gp110_1=df110_1[['v1','v2']].groupby([df110_1['k1'],sr110_1])
+""" 多元分组构成的字典:键是元组格式,值是df格式 """
 """ 选取一列或列的子集 """
+# p(dict(list(gp110_1))[('q','z')])
+# p(gp110_1.size())
+# gp110_2=df110_1[['v1','v2']].groupby([df110_1['k1'],df110_1['k2']])
+# p(gp110_2.mean())
+# p(gp110_2['v1'].mean())
+""" 对分组进行迭代 """
+""" 分组依据的值以二元元组格式构成索引,如下例中的(q,w) """
+# for (q,w),e in gp110_2:
+#    p(q,w)
+#    p(e)
+""" 分组默认是axis=0,如有需要可以改为axis=1 """
+# sr110_3=df110_1.dtypes
+# p(sr110_3)
+# gp110_3=df110_1.groupby(by=sr110_3,axis=1)
+# for a,s in gp110_3:
+   # p(a)
+   # p(s)
 """ 通过字典或series分组 """
-""" 通过函数分组 """
+""" groupby接受能与索引对齐的字典或sr作为by参数,多余映射会被忽略 """
+# dic110_4={'k1':'k','k2':'k','k3':'k','v1':'v','v2':'v','v3':'v'}
+# gp110_4=df110_1.groupby(by=dic110_4,axis=1)
+# for a,s in gp110_4:
+#    p(a)
+#    p(s)
+# sr110_5=sr(dic110_4)
+# gp110_5=df110_1.groupby(by=sr110_5,axis=1)
+# p(sr110_5)
+# for a,s in gp110_5:
+#    p(a)
+#    p(s)
+""" 通过索引分组 """
+""" 通过索引的函数值分组 """
+""" by参数输入的函数会把索引作为参数自动代入函数进行计算,并以返回值进行分类 """
+# df110_6 = df(np.arange(25).reshape((5, 5)), columns=['a', 'b', 'c', 'd', 'e'],index=['Joe', 'Steve', 'Wes', 'Jim', 'Travis'])
+# lis110_6 = list('qqqww')
+""" 实际上groupby可以接受函数分组,字典分组,列表索引和series分组混用 """
+# gp110_6 = df110_6.groupby(by=[len,lis110_6])
+# p(df110_6)
+# p(gp110_6.count())
 """ 根据索引级别分组 """
+""" 层次化索引可以通过指定level和axis进行分组 """
+# col_index110_7=pd.MultiIndex.from_arrays([list('qqqww'),list('asdas')],names=['c1','c2'])
+# df110_7=df(np.arange(20).reshape((4,5)),columns=col_index110_7)
+# gp110_7_0=df110_7.groupby(level='c1',axis=1)
+# gp110_7_1=df110_7.groupby(level=1,axis=1)
+# p(df110_7)
+# p(gp110_7_0.count())
+# p(gp110_7_1.count())
 """ 数据聚合 """
+""" group对象可以直接应用聚合函数或通过group.agg或group.aggregate方法自定义聚合运算 """
+# df110_8=df({'k1':list('qqwwq'),'k2':list('asasa'),'v1':np.arange(5),'v2':np.arange(5)+5})
+# p(df110_8)
+# gp110_8=df110_8.groupby(by=[df110_8['k1'],df110_8['k2']])
+""" quantile是series方法,但是因为group对象的元素是series,所以也适用 """
+# p(gp110_8.quantile(0.8))
+def gp_max(x):
+   return x.max()
+# p(gp110_8.aggregate(gp_max))
+# p(gp110_8.describe())
 """ 面向列的多函数应用 """
+df110_9=pd.read_csv('D:/notes-python/example/tips.csv')
+df110_9['tips_percent']=df110_9['tip']/df110_9['total_bill']
+gp110_9=df110_9.groupby(by=['day','smoker'])
+gp110_9_1=df110_9.groupby(by=['day','smoker'],as_index=False)
+""" df.head属性显示df靠前的项 """
+p(df110_9.head(10))
+""" 可以通过二元元组方法对聚合函数运算结果重命名 """
+# p(gp110_9['tips_percent','total_bill'].agg({'tips_percent':[('平均值','mean'),('标准差','std')],'total_bill':[('最大值',gp_max)]}))
+""" 以下字典参数方法会被版本更新删除,因此不推荐 """
+# p(gp110_9['tips_percent'].agg({'平均值':'mean','标准差':'std'}))
 """ 以没有行索引的形式返回聚合数据 """
+""" groupby默认会把分组依据作为索引,可以通过as_index参数关闭 """
+p(gp110_9.mean())
+p(gp110_9_1.mean())
 """ apply:一般性的拆分,应用,合并 """
 """ 禁用分组键 """
 """ 分位数和桶分析 """
+""" 番外篇:group.get_group(),group.filter() """
 """ 示例:用特定于分组的值填充缺失值 """
 """ 示例:随机采样和排列 """
 """ 示例:分组加权相关系数 """
