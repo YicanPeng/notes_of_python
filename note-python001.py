@@ -24,7 +24,7 @@ r""" 反斜杠\也是文本字符转义符"""
 """ 同一行内多条语句时,python使用;分号表示语句结束(不推荐一行多条语句) """
 """ print(字符串1,字符串2,字符串3...[sep=" ",end=" \n"])可以输出任意多个字符串,
    其中sep参数是不同字符串的间隔符,默认为空格,end参数是两个print之间的连接符,默认为换行符\n """
-str000="runoob"
+# str000="runoob"
 # print(str,"\n")
 # print(r"\n")
 # print("a",end="傻逼")
@@ -42,20 +42,20 @@ str000="runoob"
 """ 列表和元组是迭代器,用于循环遍历 """
 """ 字符串,列表和数组可以同步成对赋值多个变量,但是变量的数量必须与列表和元组的元素数量相等 """
 """ 列表的追加.append,插入.insert,删除.remove,移除.pop(默认最后一项)"""
-num001=1234;str001="runoob";tup001=(num001,str001,0)
+# num001=1234;str001="runoob";tup001=(num001,str001,0)
 """推导式语句: 自变量表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2 
    推导式语句中 for...in...if... 相当于定语(状语)从句,因此多个并列子句不能加逗号隔开;
    多个for子句的嵌套遵循相同的for循环运算顺序,即外部大循环在前而内部小循环在后;
    python中多个变量逗号仅用于同步成对元素的同时赋值,详见zip函数和enumerate函数"""
 """ range函数的头标是0,左闭右开区间 """
-lis001_1=[x+y+z for x,y,z in zip(range(3),range(3),range(3)) ]
+# lis001_1=[x+y+z for x,y,z in zip(range(3),range(3),range(3)) ]
 # num001[0]=5
 # str001[0]="x"
 # tup001[0]="a"
 # print(tup001[1][0])
 # print(lis001_1) 
 # print(len(lis_001))
-num002_0,num002_1,num002_2,num002_3,num002_4,num002_5="abcdefg"[0:-1]
+# num002_0,num002_1,num002_2,num002_3,num002_4,num002_5="abcdefg"[0:-1]
 # print((num002_0)*3)
 # print("我是%s,我今年%.3f岁" % (input("请输入姓名"),int(input("请输入年龄"))))
 """ 字符串.format方法:大括号{}内,冒号:代替百分号%作为格式化占位符,冒号:前面可以加索引符,其他格式化辅助符不变 """
@@ -68,7 +68,7 @@ num002_0,num002_1,num002_2,num002_3,num002_4,num002_5="abcdefg"[0:-1]
 """ 数字0,空字符串"",空容器(空列表[]空字典{}空元组()空集合set()),None都是布尔值的False """
 """ 列表标识符是中括号[] """
 """ 元组标识符是小括号(),空元祖()内无需元素,一个元素的元组需要在元素后加逗号,如tup002_1,否则小括号会被识别为运算符号 """
-str002="runoob";lis002=["a",1,3+2j];tup002=(str002,lis002,0);tup002_1=("a",);str002_1=("a")
+# str002="runoob";lis002=["a",1,3+2j];tup002=(str002,lis002,0);tup002_1=("a",);str002_1=("a")
 # print(str002[0::2]);print(lis002[1:-1]);print(tup002[1]),print(tup002_1);print(type(str002_1))
 """ 提示音转义符 """
 # print("\a",end="")
@@ -79,8 +79,8 @@ str002="runoob";lis002=["a",1,3+2j];tup002=(str002,lis002,0);tup002_1=("a",);str
 """ 集合的元素是无序的,因此无法索引 """
 """ 集合输出时,重复元素会被自动剔除 """
 """ 集合常用于判断元素关系和删除重复元素 """
-set003=set("123321")
-set003_3=set("1214")
+# set003=set("123321")
+# set003_3=set("1214")
 # set003_1=set(123)
 # set003_2=set("1","2","3")
 # print(set003)
@@ -100,22 +100,22 @@ set003_3=set("1214")
 """ 字典元素的标识符是冒号:,因此可以用冒号赋值两个元素构造字典 """
 """ 字典用大括号{}或dict函数赋值 """
 """ 例1空字典添加 """
-dic004_1={}
-dic004_1["one"]=1
-dic004_1[2]="second"
+# dic004_1={}
+# dic004_1["one"]=1
+# dic004_1[2]="second"
 # print(dic004_1)
 """ 例2列表推导式 """
-dic004_3={x:x**y for x in range(1,4) for y in range(1,4)}
+# dic004_3={x:x**y for x in range(1,4) for y in range(1,4)}
 # print(dic004_3)
 """ dict函数的参数接受成对赋值如例3,
    元组组成的序列如例4
    和zip或enumerate函数嵌套如例5 """
 """ 例3dict函数成对赋值,这种声明方式,键必须是字符串或元组(因为数字无法被赋值) """
 """ 例3中配对变量赋值方式, 罕见"""
-dic004_4 = dict(runoob=1,Google=2,淘宝=3)
+# dic004_4 = dict(runoob=1,Google=2,淘宝=3)
 # print(dic004_4)
 """ 例4dict函数用成对二元元组作为元素的序列赋值,zip和enumerate函数嵌套都是这类赋值 """
-dic004_2=dict((("雅蠛蝶",233),("stupid",1)))
+# dic004_2=dict((("雅蠛蝶",233),("stupid",1)))
 # p(dic004_2)
 """ 例5dict函数和zip函数嵌套赋值 """
 """ python内置的map,zip,reversed,enumerate,sorted函数都是生成器函数,赋值时实际上没有任何运算
@@ -123,21 +123,21 @@ dic004_2=dict((("雅蠛蝶",233),("stupid",1)))
    其中zip和enumerate只能使用tuple函数展开或即写即用,不能使用list和iter函数展开
    迭代使用时必须直接写入句子中,不能赋值为变量再代入,必须把函数直接写入语句中才能产生迭代
    特例: sorted自变量就是生成器,返回值也是生成器,可以直接展开 """
-lis004_5_1=[1,2,3]
-lis004_5_2=["谷歌","淘宝","企鹅","alibaba"]
-tup004_5_3=(3,6,9)
-tup004_5_4=(4,8,12)
+# lis004_5_1=[1,2,3]
+# lis004_5_2=["谷歌","淘宝","企鹅","alibaba"]
+# tup004_5_3=(3,6,9)
+# tup004_5_4=(4,8,12)
 """ zip函数生成一个zip对象,是多元成对元组组成的特殊对象 """
-zip004_5_1=zip(lis004_5_1,lis004_5_2)
-tup004_5_1=tuple(zip004_5_1)
+# zip004_5_1=zip(lis004_5_1,lis004_5_2)
+# tup004_5_1=tuple(zip004_5_1)
 # lis004_5_1z=list(next(zip004_5_1))
-ite004_5_1=iter(zip004_5_1)
-rev004_5_1=reversed(lis004_5_1)
-lis004_5_1r=list(rev004_5_1)
-zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) 
-dic004_5_1=dict(zip004_5_1) 
+# ite004_5_1=iter(zip004_5_1)
+# rev004_5_1=reversed(lis004_5_1)
+# lis004_5_1r=list(rev004_5_1)
+# zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) 
+# dic004_5_1=dict(zip004_5_1) 
 # p(dic004_5_1) #输出为空
-dic004_5_2={}
+# dic004_5_2={}
 """ 以下示例中第1句,第2句有效,而第3句,第4句运算无效,zip和enu函数只能以tuple展开或即写即用(enumerate,map,reversed同理) """
 # for k,v in zip(lis004_5_1,lis004_5_2):
 # for k,v in tup004_5_1:
@@ -159,22 +159,22 @@ dic004_5_2={}
 
 """ zip函数用于把多个列表配对成成对元组作为元素的一维列表,,其解压方式有两种 """
 """ 对于zip对象,zip解压会按照外部维度解压 """
-zip004_5_3=zip(list("asd"),(1,2,3),list("qwe"))
-dic004_5_3={k:0 for k in zip(*zip004_5_3)}
+# zip004_5_3=zip(list("asd"),(1,2,3),list("qwe"))
+# dic004_5_3={k:0 for k in zip(*zip004_5_3)}
 # p(dic004_5_3)
 """ 对于二维列表或元组,zip会在内部维度垂直解压 """
-zip004_5_4=[list("asd"),(1,2,3),list("qwe")]
-dic004_5_4={k:0 for k in zip(*zip004_5_4)}
+# zip004_5_4=[list("asd"),(1,2,3),list("qwe")]
+# dic004_5_4={k:0 for k in zip(*zip004_5_4)}
 # p(dic004_5_4)
 """ 以下示例也是垂直解压,*rest表示剩余部分 """
-tup004_a,tup004_b,*rest =zip(*(("a",1,3,7),("b",2,6,14),("c",3,9,21)))
+# tup004_a,tup004_b,*rest =zip(*(("a",1,3,7),("b",2,6,14),("c",3,9,21)))
 # print(tup004_a,tup004_b,*rest)
 
 """ reversed和sorted函数生成一个新的对象,也就是数值传递 """
 
 """ 判断与循环 """
 """ if...elif...else判断语句需要缩进 """
-num005_1=3;num005_2=3
+# num005_1=3;num005_2=3
 # if num005_1 > num005_2:
 #    print("数字A大于数字B")
 # elif num005_2 > num005_1:
@@ -183,7 +183,7 @@ num005_1=3;num005_2=3
 #    print("数字A等于数字B")
 """ while...else...循环是不定循环,因此可以无限循环,通过设定哨兵值参与循环,可以把不定循环修改成有限循环
    其中else语句在while条件false时执行 """
-num005_3 = 1
+# num005_3 = 1
 # while num005_3 <10:
 #    print(num005_3,end=" ")
 #    num005_3 += 2
@@ -210,8 +210,8 @@ num005_3 = 1
 """ 使用iter函数可以把字符串,列表,元组,集合,字典生成迭代器,迭代器使用next函数只进不退
    可以使用iter函数的对象,称为可迭代对象
    各类序列必须要使用iter函数后才可以使用next函数迭代 """
-lis006_1=[0,1,2,3,4]
-ite006_1=iter(lis006_1)
+# lis006_1=[0,1,2,3,4]
+# ite006_1=iter(lis006_1)
 # print(next(ite006_1),next(ite006_1),sep=",")
 # for n in ite006_1:
    # print(n)
@@ -220,7 +220,7 @@ ite006_1=iter(lis006_1)
    这类自定义函数被称为生成器generator """
 """ 推导式可以用于构造生成器推导式,小括号()是生成器标识符: (函数语句 for 变量范围 if 子句) 
    下例使用中括号[],则生成列表,而非生成器"""
-gen006=(x*y for x in range(3) for y in range(3))
+# gen006=(x*y for x in range(3) for y in range(3))
 # print(next(gen006))
 """ for...in 可迭代对象: 循环语句中使用有迭代属性的变量,会自动调用next函数,类似for... in... iter(序列) """
 
@@ -233,18 +233,18 @@ gen006=(x*y for x in range(3) for y in range(3))
       加两个*,参数必须以键=值的方式输入,且返回值也是字典形式
    在引用函数时,不定长参数之后的参数必须使用索引名赋值,如本例n参数 """
 """ 自定义函数最好以return结尾,而且python中return可以返回多个值 """
-def double_aster(**a):
-   print(a)
+# def double_aster(**a):
+   # print(a)
 # double_aster(b=2,c=5)
-def fibo(l=100,*m,n=100):
-   a,b=0,1
-   list_fibo=[]
-   n = int(n)
-   while b<l+n:
-      list_fibo.append(b)
-      a,b=b,a+b 
+# def fibo(l=100,*m,n=100):
+   # a,b=0,1
+   # list_fibo=[]
+   # n = int(n)
+   # while b<l+n:
+      # list_fibo.append(b)
+      # a,b=b,a+b 
    # print(m)
-   return list_fibo
+   # return list_fibo
 """ 交叉赋值,同时赋值是python特色之一 """
 """ 本例中第3参数n必须使用索引名赋值 """
 # print(fibo(100,n=1))
@@ -253,7 +253,7 @@ def fibo(l=100,*m,n=100):
    并按第一个原序列的数据类型和返回值生成一个map对象
    map对象不是序列,可以用tuple,list,iter展开 """
 """ map函数常与lambda隐函数联用 """
-map008=map(fibo,[100,200,300],(None,1),(None,None))
+# map008=map(fibo,[100,200,300],(None,1),(None,None))
 # lis008=list(map008)
 # tup008=tuple(map008)
 # ite008=iter(map008)
@@ -265,12 +265,12 @@ map008=map(fibo,[100,200,300],(None,1),(None,None))
 """ 包和模块有两种引入方式,即:import 模块 和 from 模块 import 函数 ;
 其中import 函数名 from 模块 可以直接调用函数名,无需 包名.模块.函数 的方式调用函数
 但是后引入的函数会覆盖之前引入的同名函数,因此不推荐此方法引入函数"""
-import sys
+# import sys
 """ 引入函数以后,可以通过赋值的方式(函数无需加参数括号),对函数进行重命名,以减小代码量 """
 """ sys.path属性返回python引入包和模块的所有路径,第一个路径永远是当前py文件所在的文件夹
 可以通过sys.path.append(模块路径)的方式手动添加模块路径 """
-sp = sys.path
-fb = fibo
+# sp = sys.path
+# fb = fibo
 # print(sp)
 """ dir函数返回包或模块或函数所有自定义的关键字 """
 # print(dir(fb))
@@ -278,12 +278,12 @@ fb = fibo
 
 """ enumerate函数可以把列表或元组的索引序数和元素成对对应成类似字典键:值的关系的元组,默认从0开始索引
    enumerate函数只能用tuple展开或即写即用,类似zip函数 """
-str008_1="asdfgh"
-enu008_1=enumerate(str008_1)
-tup008_1=tuple(enu008_1)
-lis008_1=list(enu008_1)
-ite008_1=iter(enu008_1)
-dic008_1={i:ele for i,ele in enu008_1}
+# str008_1="asdfgh"
+# enu008_1=enumerate(str008_1)
+# tup008_1=tuple(enu008_1)
+# lis008_1=list(enu008_1)
+# ite008_1=iter(enu008_1)
+# dic008_1={i:ele for i,ele in enu008_1}
 """ 无法遍历提前生成的enumerate对象,只能即写即用函数结果 """
 # for k,v in enumerate("asdf"):
 #    print(k)
@@ -304,7 +304,7 @@ dic008_1={i:ele for i,ele in enu008_1}
 """列表推导式语句:[表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2] """
 sm = lambda x,y,z : x+y+z
 """ lambda也可以用于柯里化currying一个已有函数,固定其中某个参数,以生成新函数 """
-sm_1=lambda x : sm(1,1,x)
+# sm_1=lambda x : sm(1,1,x)
 # print(sm(1,2,3))
 # print(sm_1(1))
 """ Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，
@@ -316,27 +316,27 @@ sm_1=lambda x : sm(1,1,x)
 # print(msg008)
 """ nonlocal关键字可以使内嵌引用外包函数的变量,而且是引用传递,会改变该变量的值 """
 """ global关键字可以使函数直接引用外部的全局变量 """
-glo008_1=1
-def out008():
-   global glo008_1
-   num = glo008_1
-   def in008():
-      nonlocal num
-      num=num+2
-   print(num*2,in008(),num*2)
-   return
+# glo008_1=1
+# def out008():
+#    global glo008_1
+#    num = glo008_1
+#    def in008():
+#       nonlocal num
+#       num=num+2
+#    print(num*2,in008(),num*2)
+#    return
 # out008()
 """ help函数是内置函数,返回数据类型或函数或模块的详细说明 """
 # help(print)
 """ yield保留字让自定义函数返回值是可迭代的生成器generator,而且不像list那样占用内存
    return保留字不会保留前次执行后的变量值,因此不可迭代 """
-def feb001(max):
-   n,a,b = 0,0,1
-   while n < max:
-      yield b
-      a,b = b, a+b
-      n = n +1
-feb001_2=feb001(5)
+# def feb001(max):
+#    n,a,b = 0,0,1
+#    while n < max:
+#       yield b
+#       a,b = b, a+b
+#       n = n +1
+# feb001_2=feb001(5)
 # print(next(feb001_2),next(feb001_2),sep=",")
 """ 一个迭代器只能使用一次,已经输出的迭代元素,无法再次输出 """
 # for n in feb001_2:
@@ -352,31 +352,31 @@ feb001_2=feb001(5)
 """ 自定义类 """
 """ 注释不要打断缩进关系树,如本例中从class下穿和def连接def的纵线 """
 """ 自定义类的外部参数在init函数中赋值,并参与类的方法参与运算 """
-class Vector:
-   """ 自定义类的函数第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
-   """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
-   """ 私有方法以双下划线开头__私有名称__双下划线结尾 """
-   """ __init__内置属性用于自定义类的初始化,并限定其参数 """
-   def __init__(self, a, b):
-      self.a = a
-      self.b = b
-   def __str__(self):
-      return 'Vector (%d, %d)' % (self.a, self.b)
-   """ 注释只能与代码块主句对齐,不能与子句缩进 """
-   """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用类的基础运算符
-   本例为使用加号运算符 """
-   def __add__(self,other):
-      return Vector(self.a + other.a, self.b + other.b)
-   """ self参数代表的是类的实例(也就是变量),而非类本身 """
-   def prt(self):
-      print(self)
-      print(self.__class__)
-      print(self.__str__.__doc__)
+# class Vector:
+   # """ 自定义类的函数第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
+   # """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
+   # """ 私有方法以双下划线开头__私有名称__双下划线结尾 """
+   # """ __init__内置属性用于自定义类的初始化,并限定其参数 """
+   # def __init__(self, a, b):
+   #    self.a = a
+   #    self.b = b
+   # def __str__(self):
+   #    return 'Vector (%d, %d)' % (self.a, self.b)
+   # """ 注释只能与代码块主句对齐,不能与子句缩进 """
+   # """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用类的基础运算符
+   # 本例为使用加号运算符 """
+   # def __add__(self,other):
+   #    return Vector(self.a + other.a, self.b + other.b)
+   # """ self参数代表的是类的实例(也就是变量),而非类本身 """
+   # def prt(self):
+   #    print(self)
+   #    print(self.__class__)
+   #    print(self.__str__.__doc__)
 """ 自定义类的第一个参数必须是实例本身,即使是无参方法,也必须声明实例本身作为参数 """
 """ 自定义类从第二个参数开始,才是真正的参数 """
-v1 = Vector(2,10)
-v2 = Vector(5,-2)
-v3 = Vector(1,2)
+# v1 = Vector(2,10)
+# v2 = Vector(5,-2)
+# v3 = Vector(1,2)
 # print(v1+v2+v3)
 # print(v1)
 """ 文件引用自身内置属性和方法,无需前缀,__name__属性永远是__main__ 
@@ -387,28 +387,28 @@ v3 = Vector(1,2)
 # print(v1.__class__.__name__)
 # v1.prt()
 """ 自定义类使用__iter__,__next__内置函数,使自定义类具备迭代属性 """
-class iteration001:
-   """ 自定义类中,参数必须赋值为self.属性才能参与其他函数运算,无论该参数是否是私有参数 """
-   def __init__(self,y=1,x=5):
-      self.y = y
-      self.x = x
-      self.a = 0
-   """ 即使无返回值,函数最好以return语句结尾;自定义类中,如果无返回值,只是定义私有属性,则return self """  
-   def __iter__(self):
-      return self
-   """ 本例中使用条件语句触发raise stopiteration终止迭代 """
-   """ python3中,迭代器不再有.next属性,只有next函数,所以只能使用__next__私有属性,而非可以被外部调用的.next公有属性 """
-   """ 本例中迭代返回值是self.a计数器 """
-   def __next__(self):
-      if self.a <self.x * self.y:
-         x = self.a
-         self.a += self.y
-         return x
-      else:
-         raise StopIteration
+# class iteration001:
+   # """ 自定义类中,参数必须赋值为self.属性才能参与其他函数运算,无论该参数是否是私有参数 """
+   # def __init__(self,y=1,x=5):
+      # self.y = y
+      # self.x = x
+      # self.a = 0
+   # """ 即使无返回值,函数最好以return语句结尾;自定义类中,如果无返回值,只是定义私有属性,则return self """  
+   # def __iter__(self):
+      # return self
+   # """ 本例中使用条件语句触发raise stopiteration终止迭代 """
+   # """ python3中,迭代器不再有.next属性,只有next函数,所以只能使用__next__私有属性,而非可以被外部调用的.next公有属性 """
+   # """ 本例中迭代返回值是self.a计数器 """
+   # def __next__(self):
+      # if self.a <self.x * self.y:
+         # x = self.a
+         # self.a += self.y
+         # return x
+      # else:
+         # raise StopIteration
 
-cls001=iteration001(1,5)
-ite008_1=iter(cls001)
+# cls001=iteration001(1,5)
+# ite008_1=iter(cls001)
 # print(next(ite008_1),next(ite008_1),sep=",")
 # for x in ite008_1:
 #    print(x,end=",")
@@ -416,49 +416,49 @@ ite008_1=iter(cls001)
    多继承的父类函数重名时,默认继承括号内排前的父类函数
    super函数可以调用子类的父类同名函数 """
 """ 以下示例中展示了format函数的和字典参数的联用,format函数和列表参数的联用 """
-class people:
+# class people:
     #定义基本属性
-    name = ''
-    age = 0
+   #  name = ''
+   #  age = 0
     #定义私有属性,私有属性在类外部无法直接进行访问
-    __weight = 0
+   #  __weight = 0
     #定义构造方法
-    def __init__(self,n,a,w):
-        self.name = n
-        self.age = a
-        self.__weight = w
-    def speak(self):
-        print("%s 说: 我 %d 岁。" %(self.name,self.age))
-class student(people):
-    grade = ''
-    def __init__(self,n,a,w,g):
+   #  def __init__(self,n,a,w):
+      #   self.name = n
+      #   self.age = a
+      #   self.__weight = w
+   #  def speak(self):
+   #      print("%s 说: 我 %d 岁。" %(self.name,self.age))
+# class student(people):
+   #  grade = ''
+   #  def __init__(self,n,a,w,g):
         #调用父类的构函
-        people.__init__(self,n,a,w)
-        self.grade = g
+      #   people.__init__(self,n,a,w)
+      #   self.grade = g
     #覆写父类的speak方法
-    def speak(self):
+   #  def speak(self):
         #本例中大括号{}内第一个0不可省略,表示format的参数索引序数
-        print("{0[0]} 说: 我 {0[1]} 岁了，我在读 {0[2]} 年级".format([self.name,self.age,self.grade]))
-class speaker():
-    topic = ''
-    name = ''
-    def __init__(self,n,t,a):
-        self.name = n
-        self.topic = t
-        self.age=a
-        self.properties008={"q":self.name,"w":self.topic,"e":self.age}
-    def speak(self):
-        print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
+      #   print("{0[0]} 说: 我 {0[1]} 岁了，我在读 {0[2]} 年级".format([self.name,self.age,self.grade]))
+# class speaker():
+#     topic = ''
+#     name = ''
+#     def __init__(self,n,t,a):
+#         self.name = n
+#         self.topic = t
+#         self.age=a
+      #   self.properties008={"q":self.name,"w":self.topic,"e":self.age}
+   #  def speak(self):
+      #   print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
 """ 由于文本.format函数文本中大括号{}内的索引返回的是带括号的文本,所以上例中字典无法以数字作为键来进行索引 """
 """ 此处使用双**号使参数以字典的形式引入函数中 """
-class sample(student,speaker):
+# class sample(student,speaker):
 # 切换不同顺序则父类不同
 # class sample(speaker,student):
    #  a =''
-    def __init__(self,n,a,w,g,t):
-        student.__init__(self,n,a,w,g)
-        speaker.__init__(self,n,t,a)
-test = sample("Tim",25,80,4,"Python")
+   #  def __init__(self,n,a,w,g,t):
+      #   student.__init__(self,n,a,w,g)
+      #   speaker.__init__(self,n,t,a)
+# test = sample("Tim",25,80,4,"Python")
 """ 方法名同，默认调用的是在括号中排前的父类的方法 """
 # test.speak()
 """ super函数第一个参数是变量的子类,第二个参数是变量,使用后返回一个以子类参数为参数的父类对象 """
@@ -503,7 +503,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import Series as sr,DataFrame as df
 import seaborn as sns
-# import statsmodels as sm
+import statsmodels as sm
 """ 自定义isiterable函数以后使用 """
 def isiterable(ele):
    try:
@@ -516,16 +516,16 @@ def isiterable(ele):
 """ 装饰器用于在不改变已有函数内部结构的前提下,把原函数作为参数嵌套进装饰器函数中,函数原地重命名 """
 """ 装饰器函数必须闭包,所以1.装饰器必须内嵌函数,2.return内嵌函数3.return内嵌函数不加括号 """
 """ 本例中通过添加*和**,使得装饰器可以装饰在有任意类型参数的函数上 """
-def greet001(b="王凤"):   
-   def middle(f):
-      def inner(*x,**y):
-         p("Hello",b,sep=",",end="!\n")
-         f(*x,**y)
-      return inner
-   return middle
-"""  """
-def self_introduce001(a="彭义灿"):
-   p("My name is {}!".format(a))
+# def greet001(b="王凤"):   
+#    def middle(f):
+#       def inner(*x,**y):
+#          p("Hello",b,sep=",",end="!\n")
+#          f(*x,**y)
+#       return inner
+#    return middle
+# """  """
+# def self_introduce001(a="彭义灿"):
+#    p("My name is {}!".format(a))
 
 """ 不使用语法糖,则相当于外套函数原地赋值 """
 """ 第二个括号内是函数名作为参数,不是运行self_introduce001函数;
@@ -750,7 +750,7 @@ def self_introduce001(a="彭义灿"):
 # import sys
 # path = os.path.abspath(os.path.dirname(sys.argv[0]))
 # p(path)
-# df102_16=pd.read_csv("d:/notes-python/example/ex1.csv")
+# df102_16=pd.read_csv("d:/notes-python/examples/ex1.csv")
 r""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\” 
    “./”：一个点表示当前目录；（表示当前目录时，也可以去掉“./”，直接写文件名或者下级目录）
    “../”：两个点表示上级目录。"""
@@ -758,12 +758,12 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
    先在终端中输入:d,切换盘符
    再cd notes-python转至目标文件夹 """
 """ nrow参数设置读取行 """
-# df102_16=pd.read_csv("example/ex1.csv",nrows=2)
+# df102_16=pd.read_csv("examples/ex1.csv",nrows=2)
 # p(df102_16)
 # import csv
 """ csv.reader是成行读取csv文件 """
 """ zip(*values)是把values垂直解压 """
-# with open("example/ex7.csv") as f102_17:
+# with open("examples/ex7.csv") as f102_17:
    # csv102_17=csv.reader(f102_17)
    # lines=list(csv102_17)
    # header,values = lines[0],lines[1:]
@@ -774,9 +774,13 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
    # p(repr(zip(*values)))
    # df102_17=df(data_dict)
    # p(df102_17)
+""" 版本警告:read_table即将删除 """
+""" 利用read_table读写文件 """
+# df106_22=pd.read_table("d:/notes-python/examples/ex2.csv",sep=',',header=None,names=['a','b','c','d','message'],index_col='message')
+# p(df106_22)
 """ 读写Excel """
-""" 先利用路径创建Excel实例,再通过read_excel读取 """
-# exc102_18=pd.ExcelFile('example/ex1.xlsx')
+""" 先利用pd.ExcelFile创建Excel实例,再通过read_excel读取 """
+# exc102_18=pd.ExcelFile('examples/ex1.xlsx')
 """ 读取多个sheet时,sheet名称用中括号包围(不能用小括号) """
 # df102_18=pd.read_excel(exc102_18,['example1','example2'])
 # p(df102_18)
@@ -859,6 +863,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 # qct102_21_1=pd.qcut(lis102_21,3,precision=1)
 # p(qct102_21_1)
 """ 分段参数设为0-1的小数,即可控制分位点 """
+""" 分段参数可以设置成整数,则按此比例均分 """
 # qct102_21_2=pd.qcut(lis102_21,[0,0.3,0.7,0.9,1],precision=1)
 # p(qct102_21_2)
 """ 检测和转换异常值.any方法 """
@@ -868,9 +873,9 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 # p(df102_22_1)
 """ np.sign函数把负数转为-1,正数转为1,0转为0,nan转为nan,可以用此函数转换超出正常值的数值 """
 # p(np.sign(df102_22))
-""" 随机重排序np.random.permuting函数和.take方法;随机采样.sample方法(不重复replace=False) """
+""" 随机抽样np.random.permuting函数和df.take方法;随机采样.sample方法(不重复replace=False) """
 # df102_23=df(np.arange(5*4).reshape(5,4))
-# slt102_23_1=np.random.permutation(4)
+# slt102_23_1=np.random.permutation(3)
 # p(df102_23)
 # p(df102_23.take(slt102_23_1,axis=1))
 # p(df102_23.loc[:,slt102_23_1])
@@ -1098,7 +1103,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ by参数输入的函数会把索引作为参数自动代入函数进行计算,并以返回值进行分类 """
 # df110_6 = df(np.arange(25).reshape((5, 5)), columns=['a', 'b', 'c', 'd', 'e'],index=['Joe', 'Steve', 'Wes', 'Jim', 'Travis'])
 # lis110_6 = list('qqqww')
-""" 实际上groupby可以接受函数分组,字典分组,列表索引和series分组混用 """
+""" groupby的by参数接受函数分组,字典分组,列表索引,series分组,pd.cut和pd.qcut生成的categorical对象混用 """
 # gp110_6 = df110_6.groupby(by=[len,lis110_6])
 # p(df110_6)
 # p(gp110_6.count())
@@ -1118,35 +1123,55 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # gp110_8=df110_8.groupby(by=[df110_8['k1'],df110_8['k2']])
 """ quantile是series方法,但是因为group对象的元素是series,所以也适用 """
 # p(gp110_8.quantile(0.8))
-def gp_max(x):
-   return x.max()
+# def gp_max(x):
+#    return x.max()
 # p(gp110_8.aggregate(gp_max))
 # p(gp110_8.describe())
 """ 面向列的多函数应用 """
-df110_9=pd.read_csv('D:/notes-python/example/tips.csv')
+df110_9=pd.read_csv('D:/notes-python/examples/tips.csv')
 df110_9['tips_percent']=df110_9['tip']/df110_9['total_bill']
-gp110_9=df110_9.groupby(by=['day','smoker'])
-gp110_9_1=df110_9.groupby(by=['day','smoker'],as_index=False)
+# gp110_9=df110_9.groupby(by=['day','smoker'])
+# gp110_9_1=df110_9.groupby(by=['day','smoker'],as_index=False)
 """ df.head属性显示df靠前的项 """
-p(df110_9.head(10))
-""" 可以通过二元元组方法对聚合函数运算结果重命名 """
+# p(df110_9.head(10))
+""" 可以通过字典指定group对象运算,中括号[]标识符和二元成对元组对聚合函数运算结果重命名 """
 # p(gp110_9['tips_percent','total_bill'].agg({'tips_percent':[('平均值','mean'),('标准差','std')],'total_bill':[('最大值',gp_max)]}))
 """ 以下字典参数方法会被版本更新删除,因此不推荐 """
 # p(gp110_9['tips_percent'].agg({'平均值':'mean','标准差':'std'}))
 """ 以没有行索引的形式返回聚合数据 """
-""" groupby默认会把分组依据作为索引,可以通过as_index参数关闭 """
-p(gp110_9.mean())
-p(gp110_9_1.mean())
+""" groupby不应用聚合函数时,默认会把分组依据设置为索引,设置as_index参数关闭 """
+# p(gp110_9.mean())
+# p(gp110_9_1.mean())
 """ apply:一般性的拆分,应用,合并 """
-""" 禁用分组键 """
+""" 前闭后开索引,待解? """
+def top(dtf,n=5,column='tips_percent'):
+   return dtf.sort_values(by=column,ascending=False)[:n]
+# p(top(df110_9,n=6))
+""" apply应用函数时,被应用函数参数与函数名应当并列赋值 """
+""" groupby应用聚合函数时,默认把分组依据和原始索引合并为层次化索引,设置group_keys参数可以关闭 """
+# p(df110_9.groupby(by=['smoker','day'],group_keys=False).apply(top,n=1,column='total_bill'))
 """ 分位数和桶分析 """
+""" groupby中by参数可以接受pd.cut和pd.qcut生成的对象 """
+# df110_11=df({'v1':np.random.rand(20),'v2':np.random.rand(20)})
+# ctg110_11_c=pd.cut(df110_11['v1'],5)
+# ctg110_11_q=pd.qcut(df110_11['v1'],5)
+# p(df110_11)
+""" agg方法接受中括号[]和二元元组对函数输出值重命名 """
+# p(df110_11.groupby(ctg110_11_c).agg([('平均值','mean')]))
+# p(df110_11.groupby(ctg110_11_q).agg(['mean']))
 """ 番外篇:group.get_group(),group.filter() """
 """ 示例:用特定于分组的值填充缺失值 """
 """ 示例:随机采样和排列 """
 """ 示例:分组加权相关系数 """
 """ 示例:组级别的线性回归 """
 """ 透视表和交叉表 """
-""" 交叉表:crosstab """
+""" 透视表df.pivot_table是用于对数据进行分组和聚合的方法,且不同于groupby方法,df.pivot_table可以把分组依据转置为列索引 """
+""" 透视表的aggfunc默认为'mean',可以指定为自定义函数或任意对series成立的聚合函数,margins参数用于设置是否进行小计,fill_value参数用于设置填充值 """
+""" 透视表不支持对aggfunc输出值重命名,待解 """
+# p(df110_9.pivot_table(index=['time','day'],columns=['smoker'],values=['tips_percent','size'],margins=True,fill_value='NX',aggfunc={'size':len,'tips_percent':'std'}))
+""" 生成交叉表:pd.crosstab """
+""" 交叉表是专用于计算分组频率的特殊透视表 """
+# p(pd.crosstab(index=[df110_9['time'],df110_9['day']],columns=df110_9['smoker'],margins=True))
 
 """ 时间序列 """
 """ 日期和时间数据类型及工具 """
