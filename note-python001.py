@@ -1128,8 +1128,8 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(gp110_8.aggregate(gp_max))
 # p(gp110_8.describe())
 """ 面向列的多函数应用 """
-df110_9=pd.read_csv('D:/notes-python/examples/tips.csv')
-df110_9['tips_percent']=df110_9['tip']/df110_9['total_bill']
+# df110_9=pd.read_csv('D:/notes-python/examples/tips.csv')
+# df110_9['tips_percent']=df110_9['tip']/df110_9['total_bill']
 # gp110_9=df110_9.groupby(by=['day','smoker'])
 # gp110_9_1=df110_9.groupby(by=['day','smoker'],as_index=False)
 """ df.head属性显示df靠前的项 """
@@ -1144,8 +1144,8 @@ df110_9['tips_percent']=df110_9['tip']/df110_9['total_bill']
 # p(gp110_9_1.mean())
 """ apply:一般性的拆分,应用,合并 """
 """ 前闭后开索引,待解? """
-def top(dtf,n=5,column='tips_percent'):
-   return dtf.sort_values(by=column,ascending=False)[:n]
+def top(frm,n=5,column='tips_percent'):
+   return frm.sort_values(by=column,ascending=False)[:n]
 # p(top(df110_9,n=6))
 """ apply应用函数时,被应用函数参数与函数名应当并列赋值 """
 """ groupby应用聚合函数时,默认把分组依据和原始索引合并为层次化索引,设置group_keys参数可以关闭 """
@@ -1175,8 +1175,26 @@ def top(dtf,n=5,column='tips_percent'):
 
 """ 时间序列 """
 """ 日期和时间数据类型及工具 """
+from datetime import datetime as dt,timedelta as td
+""" datetime数据格式以毫秒储存时间,以timedelta格式表示两个datetime数据的时间差 """
+# p(dt.now())
+# p(dt.now().year)
+""" .tzinfo用于储存时区信息 """
+# p(dt.now().tzinfo)
+""" dt数据可以被dt.strftime方法格式化为字符串,格式参见Excel表格 """
+# p(dt.now().strftime('%F'))
 """ 字符串和datetime相互转换 """
+""" dt.strptime函数可以把字符串转为dt数据 """
+# p(dt.strptime('2019-7-8','%Y-%m-%d'))
+from dateutil.parser import parse as ps 
+""" parse是比dt.strptime函数更简易的日期字符串解析包,但parse包更容易出错;设置dayfirst参数,可以声明字符串是'日月年'日期格式 """
+# p(ps('8-7-2019',dayfirst=True))
+""" 数据戳的null值是nat not a number """
+""" pandas处理时间字符串series常用pd.to_datetime函数 """
+# p(pd.to_datetime(['2019-7-8 21:10:36',None]))
 """ 时间序列基础 """
+""" pandas基本时间序列是以时间戳为索引的series,pandas时间戳通常由字符串或datetime对象生成
+   pandas用numpy的datetime64数据类型以纳秒形式存储时间戳 """
 """ 索引,选取和子集构造 """
 """ 带有重复索引的时间序列 """
 """ 日期的范围,频率和移动 """
