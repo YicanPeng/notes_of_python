@@ -233,6 +233,7 @@ r""" 反斜杠\也是文本字符转义符"""
       加两个*,参数必须以键=值的方式输入,且返回值也是字典形式
    在引用函数时,不定长参数之后的参数必须使用索引名赋值,如本例n参数 """
 """ 自定义函数最好以return结尾,而且python中return可以返回多个值 """
+""" 调用函数时,不带括号则调用的是函数对象;带括号调用,则调用的是函数单次运行的结果(如果有必要参数则必须输入参数) """
 # def double_aster(**a):
    # print(a)
 # double_aster(b=2,c=5)
@@ -449,7 +450,7 @@ sm = lambda x,y,z : x+y+z
       #   self.properties008={"q":self.name,"w":self.topic,"e":self.age}
    #  def speak(self):
       #   print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
-""" 由于文本.format函数文本中大括号{}内的索引返回的是带括号的文本,所以上例中字典无法以数字作为键来进行索引 """
+""" 文本.format函数,文本内大括号{}如果是数字索引,则仅是format参数的位置索引,不能作为参数标识符 """
 """ 此处使用双**号使参数以字典的形式引入函数中 """
 # class sample(student,speaker):
 # 切换不同顺序则父类不同
@@ -500,6 +501,11 @@ sm = lambda x,y,z : x+y+z
 """ 数据分析入门 """
 import numpy as np 
 import matplotlib.pyplot as plt 
+plt_font = {'family' : 'SimHei',
+        'weight' : 'bold',
+        'size'   : '12'}
+plt.rc('font', **plt_font)               # 步骤一（设置字体的更多属性）
+plt.rc('axes', unicode_minus=False)  # 步骤二（解决坐标轴负数的负号显示问题）
 import pandas as pd
 from pandas import Series as sr,DataFrame as df
 import seaborn as sns
@@ -646,7 +652,7 @@ def isiterable(ele):
 # df102_7=df(np.arange(3),index=list("aaa"))
 # p(df102_7[0])
 """ df的中括号[]普通索引只能索引列,不能索引行,索引行和添加行或者定点索引只能使用.loc属性,.loc是索引,
-   所以参数用中括号[],.loc和.iloc截取是前闭后开区间,与python普通索引方法一致 """
+   所以参数用中括号[],.loc和.iloc截取是左闭右开区间,与python普通索引方法一致 """
 # df102_5.loc["q"]=0
 """ 添加行 """
 # df102_5.loc["y","d"]=0
@@ -784,7 +790,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 """ 读取多个sheet时,sheet名称用中括号包围(不能用小括号) """
 # df102_18=pd.read_excel(exc102_18,['example1','example2'])
 # p(df102_18)
-""" 读写MySQL """
+""" python简单读写MySQL """
 # import mysql.connector
 # myconn=mysql.connector.connect(host='localhost',user='root',password='1234',database='runoob')
 # mycursor=myconn.cursor()
@@ -793,6 +799,16 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 #    p(x)
 # mycursor.close
 # myconn.close
+""" pandas读写MySQL """
+# import pymysql
+# import sqlalchemy
+# from sqlalchemy import create_engine 
+# info_conn_to_mysql='mysql+pymysql://{0}:{1}@{2}:{3}/{4}?charset=utf8'.format('root','1234','localhost','3306','runoob')
+# engine_mysql=create_engine(info_conn_to_mysql)
+# cmd_sql='select * from tb1'
+# df10999=pd.read_sql(sql=cmd_sql,con=engine_mysql)
+# p(df10999)
+""" 使用df.to_sql可以把df写入MySQL中 """
 
 """ 数据清洗与转换 """
 """ 处理缺失值 """
@@ -847,7 +863,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 # df102_20.index=df102_20.index.map(lambda x : x**3)
 # p(df102_20)
 """ 离散化和面元划分 """
-""" pd.cut和pd.qcut函数,默认前开后闭,可以设置right=false改为前闭后开 """
+""" pd.cut和pd.qcut函数,默认左开右闭,可以设置right=false改为左闭右开 """
 # lis102_21 = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
 # bin102_21=[0,25,30,35,50,100]
 """ pd.cut返回值是一个categorical对象,可以视作由分类标签labels构成的字符串 """
@@ -856,7 +872,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 # p(ct102_21_1.codes)
 """ pd.value_counts函数返回各个面元的数据数量 """
 # p(pd.value_counts(ct102_21_1))
-""" 如果输入的是分割段数,则会按最值均分所有数据,precision=2小数点后保留两位,right=false前闭后开 """
+""" 如果输入的是分割段数,则会按最值均分所有数据,precision=2小数点后保留两位,right=false左闭右开 """
 # ct102_21_2=pd.cut(lis102_21,4,precision=2,right=False)
 # p(ct102_21_2)
 """ pd.qcut按最大最小值进行分位数分割,保证每段元素个数相同 """
@@ -943,7 +959,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(sr108_1.index)
 """ 层次化索引更简单,常规索引需要排序后才能切片,且索引排序需要指定level """
 # sr108_1_1=sr108_1.sort_index(level=0)
-""" 层次化索引的不同层级用小括号()作为一个整体索引 """
+""" 层次化索引的不同层级用小括号()作为一个整体代入中括号索引 """
 # p(sr108_1_1[('e',2):'r'])
 # p(sr108_1.loc[:,2])
 # p(sr108_1.loc[['q','w']])
@@ -1059,11 +1075,11 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 
 """ 数据聚合与分组运算 """
 """ groupby机制 """
-""" df.groupby生成的是可迭代的group对象,全部是二元元组,需要用函数(常用list)才能实例化,实例化后可以以此生成字典 """
+""" df.groupby生成的是可迭代的group对象是由索引和值构成的二元成对迭代器,需要用函数(常用list)才能实例化,实例化后可以以此生成字典 """
 """ df.groupby指定的分组依据会成为新df的索引 """
 # df110_1=df({'k1':list('qqwwq'),'k2':list('asasa'),'v1':np.arange(5),'v2':np.arange(5)+5})
 # p(df110_1.sort_values(by='k1'))
-""" 也可以指定df外能与df索引对齐的series成为分组依据,所以by参数必须指明df切片 """
+""" 也可以指定df外能与df索引对齐的series成为分组依据,在df的切片进行分组group时,如果by参数接受df的列作为参数,则必须是df[],不能省略df """
 # sr110_1=sr(list('zzxxxx'))
 # gp110_1=df110_1[['v1','v2']].groupby([df110_1['k1'],sr110_1])
 """ 多元分组构成的字典:键是元组格式,值是df格式 """
@@ -1071,10 +1087,14 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(dict(list(gp110_1))[('q','z')])
 # p(gp110_1.size())
 # gp110_2=df110_1[['v1','v2']].groupby([df110_1['k1'],df110_1['k2']])
-# p(gp110_2.mean())
+# for [i,v] in gp110_2:
+   # p(i)
+   # p(v)
+""" get_group()用于读取指定索引的gp对象内的元素 """
+# p(gp110_2.get_group(('q','a')))
 # p(gp110_2['v1'].mean())
 """ 对分组进行迭代 """
-""" 分组依据的值以二元元组格式构成索引,如下例中的(q,w) """
+""" 分组依据的值以多元元组格式构成索引,如下例中的(q,w) """
 # for (q,w),e in gp110_2:
 #    p(q,w)
 #    p(e)
@@ -1083,8 +1103,8 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(sr110_3)
 # gp110_3=df110_1.groupby(by=sr110_3,axis=1)
 # for a,s in gp110_3:
-   # p(a)
-   # p(s)
+#    p(a)
+#    p(s)
 """ 通过字典或series分组 """
 """ groupby接受能与索引对齐的字典或sr作为by参数,多余映射会被忽略 """
 # dic110_4={'k1':'k','k2':'k','k3':'k','v1':'v','v2':'v','v3':'v'}
@@ -1099,8 +1119,8 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 #    p(a)
 #    p(s)
 """ 通过索引分组 """
-""" 通过索引的函数值分组 """
-""" by参数输入的函数会把索引作为参数自动代入函数进行计算,并以返回值进行分类 """
+""" 通过索引的进行函数运算分组 """
+""" by参数输入的函数会把索引作为参数自动代入函数进行计算,并以返回值进行分类,函数不能加括号,类似apply """
 # df110_6 = df(np.arange(25).reshape((5, 5)), columns=['a', 'b', 'c', 'd', 'e'],index=['Joe', 'Steve', 'Wes', 'Jim', 'Travis'])
 # lis110_6 = list('qqqww')
 """ groupby的by参数接受函数分组,字典分组,列表索引,series分组,pd.cut和pd.qcut生成的categorical对象混用 """
@@ -1124,7 +1144,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ quantile是series方法,但是因为group对象的元素是series,所以也适用 """
 # p(gp110_8.quantile(0.8))
 # def gp_max(x):
-#    return x.max()
+   # return x.max()
 # p(gp110_8.aggregate(gp_max))
 # p(gp110_8.describe())
 """ 面向列的多函数应用 """
@@ -1143,30 +1163,29 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(gp110_9.mean())
 # p(gp110_9_1.mean())
 """ apply:一般性的拆分,应用,合并 """
-""" 前闭后开索引,待解? """
-def top(frm,n=5,column='tips_percent'):
-   return frm.sort_values(by=column,ascending=False)[:n]
-# p(top(df110_9,n=6))
+""" 左闭右开索引,待解? """
+# def gp_top(frm,n=5,column='tips_percent'):
+   # return frm.sort_values(by=column,ascending=False)[:n]
+# p(gp_top(df110_9,n=6))
 """ apply应用函数时,被应用函数参数与函数名应当并列赋值 """
-""" groupby应用聚合函数时,默认把分组依据和原始索引合并为层次化索引,设置group_keys参数可以关闭 """
-# p(df110_9.groupby(by=['smoker','day'],group_keys=False).apply(top,n=1,column='total_bill'))
+""" groupby.apply应用聚合函数时,默认把分组依据和原始索引合并为层次化索引,设置group_keys参数可以关闭 """
+# p(df110_9.groupby(by=['smoker','day'],group_keys=False).apply(gp_top,n=1,column='total_bill'))
 """ 分位数和桶分析 """
 """ groupby中by参数可以接受pd.cut和pd.qcut生成的对象 """
 # df110_11=df({'v1':np.random.rand(20),'v2':np.random.rand(20)})
 # ctg110_11_c=pd.cut(df110_11['v1'],5)
 # ctg110_11_q=pd.qcut(df110_11['v1'],5)
 # p(df110_11)
-""" agg方法接受中括号[]和二元元组对函数输出值重命名 """
+""" agg方法接受中括号[]和二元元组对函数输出列重命名 """
 # p(df110_11.groupby(ctg110_11_c).agg([('平均值','mean')]))
 # p(df110_11.groupby(ctg110_11_q).agg(['mean']))
-""" 番外篇:group.get_group(),group.filter() """
 """ 示例:用特定于分组的值填充缺失值 """
 """ 示例:随机采样和排列 """
 """ 示例:分组加权相关系数 """
 """ 示例:组级别的线性回归 """
 """ 透视表和交叉表 """
 """ 透视表df.pivot_table是用于对数据进行分组和聚合的方法,且不同于groupby方法,df.pivot_table可以把分组依据转置为列索引 """
-""" 透视表的aggfunc默认为'mean',可以指定为自定义函数或任意对series成立的聚合函数,margins参数用于设置是否进行小计,fill_value参数用于设置填充值 """
+""" 透视表的aggfunc默认为'mean',可以指定为自定义函数或任意对series成立的聚合函数,margins参数用于开关进行分组汇总小计,fill_value参数用于设置填充值 """
 """ 透视表不支持对aggfunc输出值重命名,待解 """
 # p(df110_9.pivot_table(index=['time','day'],columns=['smoker'],values=['tips_percent','size'],margins=True,fill_value='NX',aggfunc={'size':len,'tips_percent':'std'}))
 """ 生成交叉表:pd.crosstab """
@@ -1181,7 +1200,7 @@ from datetime import datetime as dt,timedelta as td
 # p(dt.now().year)
 """ .tzinfo用于储存时区信息 """
 # p(dt.now().tzinfo)
-""" dt数据可以被dt.strftime方法格式化为字符串,格式参见Excel表格 """
+""" dt数据可以被dt.strftime方法格式化为字符串,全部dt时间格式参见Excel表格 """
 # p(dt.now().strftime('%F'))
 """ 字符串和datetime相互转换 """
 """ dt.strptime函数可以把字符串转为dt数据 """
@@ -1194,52 +1213,310 @@ from dateutil.parser import parse as ps
 # p(pd.to_datetime(['2019-7-8 21:10:36',None]))
 """ 时间序列基础 """
 """ pandas基本时间序列是以时间戳为索引的series,pandas时间戳通常由字符串或datetime对象生成
-   pandas用numpy的datetime64数据类型以纳秒形式存储时间戳 """
+   pandas用numpy的datetime64数据类型以纳秒形式存储时间戳
+   pandas的时间序列索引是专用的DatetimeIndex,DatetimeIndex的值是Timestamp对象 """
 """ 索引,选取和子集构造 """
+""" DatetimeIndex索引方式接受dt时间,Timestamp型时间,字符串型时间 """
+""" 常用dt函数构造dt时间 """
+# p(dt(2019,7,10))
+""" 也经常使用pd.DatetimeIndex函数构造时间序列索引 """
+# di111_1=pd.DatetimeIndex(['2019/7/1','2019/7/2','2019/7/2','2019/7/1','2019/7/3'])
+# df111_1=df(np.arange(20).reshape((5,4)),index=di111_1)
+# p(df111_1['2019/7/1'])
+# p(df111_1.groupby(level=0).count())
+""" 时间序列的索引也是就地运算 """
 """ 带有重复索引的时间序列 """
+""" 相同时间段的时间序列索引时构成切片 """
 """ 日期的范围,频率和移动 """
 """ 生成日期范围 """
+""" pd.date_range生成指定长度的DatetimeIndex,periods参数设定freq的循环次数,freq参数设定频率 """
+""" pd.date_range默认保留时分秒,可以通过normalize参数关闭 """
+# p(pd.date_range(start='2018/1/1 15:24:17',end='2019/7/10',freq='BQS-AUG',normalize=True))
 """ 频率和日期偏移量 """
+from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
+""" 时间序列的基础频率是类似以上引入的Hour和Minute,但日常使用时只需要设立整数倍的基础频率即可 """
+# p(pd.date_range(start='2019/7/10 15:43:13',periods=3,freq='1h30t'))
 """ wom日期 """
+""" 对于非固定时间间隔而是指定日期的pandas基础频率,称为锚定偏移(anchored offset),如wom-1mon,表示每个月第一个周一 """
+# p(pd.date_range(start='2019/7/10 15:43:13',periods=3,freq='WOM-1fri'))
 """ 移动(超前和滞后)数据 """
+""" sr.shift和pd.shift在没有freq参数时,默认时间索引不变,只移动数值;而设置freq参数后,数值不动,而移动时间索引 """
+# sr111_2=sr(np.arange(4),index=pd.date_range(start='2019/7/10',periods=4,freq='m'))
+# p(sr111_2)
+# p(sr111_2.shift(2))
+# p(sr111_2.shift(2,freq='90t'))
 """ 通过偏移量对日期进行位移 """
+""" dt时间也可以通过直接计算偏移量而移动 """
+""" 由2019/7/10加22天得到8月1号,由8月1号的第二个月末得出930 """
+# p(dt(2019,7,10)+22*Day()+MonthEnd(2))
+""" 对于锚定时点,有.rollforward和.rollback方法,移动时间 """
+# p(MonthEnd().rollback('20190711'))
+# p(MonthEnd().rollforward('20190711'))
+""" 利用锚定时点的rollforward可以实现类似resample的时间序列索引的分组,但是此方法仅供参考,不推荐学习 """
+# sr111_3=sr(np.arange(10),index=pd.date_range(start='20190711',periods=10,freq='7d'))
+# p(sr111_3)
+# p(sr111_3.groupby(MonthEnd().rollforward).mean())
 """ 时区处理 """
 """ 时区本地化和转换 """
 """ 操作时区意识型timestamp对象 """
 """ 不同时区之间的运算 """
 """ 时期及其算术运算 """
+""" 时期period表示的是时间段,用pd.period函数构造,由指定时间点(时间点也可以只精确到月份或年) """
+# pr111_3=pd.Period('2019/7/10',freq='a-jun')
+# pr111_4=pd.Period('2019/3/22',freq='a-jun')
+""" 时期可以用整数进行加减运算 """
+# p(pr111_3+1)
+""" 相同freq的时期可以用减法计算时间差,不能用加法 """
+# p(pr111_3-pr111_4)
+""" pd.period_range用于生成一组时期索引PeriodIndex """
+# p(pd.period_range('2019/7/10',periods=4,freq='m'))
+""" 如果有有字符串数组,可以使用pd.periodindex函数生成periodindex对象 """
+# p(pd.PeriodIndex(['2019Q1','2019Q2','2019Q3'],freq='q-dec'))
 """ 时期的频率转换 """
+""" period对象,带periodindex索引的series对象和df对象都可以通过.asfreq方法转为其他频率,how指代转化时间戳 """
+# pr111_5=pd.Period('2019-jul',freq='a-jun')
+# pr111_6=pr111_5.asfreq(freq='m',how='start')
+# p(repr(pr111_5))
+# p(repr(pr111_6))
 """ 按季度计算的时期频率 """
+# pri111_7=pd.period_range(start='2018q1',end='2019q2',freq='q-dec')
+# df111_7=df(np.arange(len(pri111_7)*2).reshape((len(pri111_7),2)),index=pri111_7)
+# p(df111_7)
+""" period对象的频率转换,m对应月(不是锚定偏移),d对应每月最后一个日历日,bm对应月(不是锚定偏移),b对应最后一个工作日 """
+# p(df111_7.asfreq(freq='b',how='e'))
 """ timestamp和period相互转换 """
+""" 含有period和timestamp作为索引的sr和pd,可以使用.to_timestamp和.to_period方法进行相互转换,其中时间戳转为时期,时期会重复 """
+# tsi111_8=pd.date_range('2019/6/29',periods=6,freq='d')
+# sr111_8=sr(np.random.randn(6),index=tsi111_8)
+""" 设置freq参数,可以指定period """
+# sr111_8_1=sr111_8.to_period()
+# sr111_8_2=sr111_8_1.to_timestamp(how='e')
+# p(sr111_8)
+# p(sr111_8_1)
+# p(sr111_8_2)
 """ 通过数组创建periodindex """
+""" 对于时期存在于df对象内部的df,可以通过pd.periodindex函数设置对应的时间参数生成periodindex索引 """
+# df111_9=pd.read_csv("D:/notes-python/examples/macrodata.csv")
+# p(df111_9.head(10))
+# pri111_9=pd.PeriodIndex(year=df111_9['year'],quarter=df111_9['quarter'],freq='q-dec')
+# df111_9.index=pri111_9
+# p(df111_9['infl'].head(10))
 """ 重采样及频率转换 """
+""" 重采样是用df.resample方法类似根据时间索引进行分组group,生成的是resample对象 """
 """ 降采样 """
+""" 把高频数据转为低频数据,称为降采样;反之称为升采样 """
+# tsi111_10=pd.date_range('2019/7/10 20:33:05',periods=50,freq='t')
+# sr111_10=sr(np.arange(len(tsi111_10)),index=tsi111_10)
+# p(sr111_10.head(10))
+""" rule参数表示重采样的时间间隔;level参数表示重采样的索引级别;axis参数表示重采样轴,默认axis=0;
+   fill_method表示升采样时的插值方式,默认不插值;closed默认区间左开右闭;loffset(如'+1s')表示时间校正(类似.shift方法)
+   limit表示升采样填充时允许的最大时期数;kind表示聚合的时间索引类型('timestamp'或者是'period'),默认与原时间序列相同(timestamp是锚定整点聚合,而非固定时间间隔)
+   label参数表示降采样时,显示整数面元的边界'left'或者'right',默认left;convention参数表示时期索引升采样父时期转换为子时期的转换方法,默认是'start',即由父时期的起始子时期继承父时期的值 """
+# p(sr111_10.resample(level=0,rule='10t',label='right',kind='period').sum())
+# p(sr111_10.resample(level=0,rule='10t',label='right',kind='timestamp').sum())
 """ ohlc重采样 """
+""" ohlc指的是股票常用的开盘价open,最高价high,最低价low,收盘价close,用于求取一维series的特定二维df """
+# p(sr111_10.resample(rule='10min',kind='period').ohlc())
 """ 升采样和插值 """
+""" resample.asfreq方法可以实例化resample对象 """
+# df111_11=df(np.arange(2*4).reshape((2,4)),index=pd.date_range('2019/7/10',periods=2,freq='w-wed'))
+# p(df111_11)
+# p(df111_11.resample('d',fill_method='ffill').asfreq('d'))
+# p(df111_11.resample('d').bfill(limit=3))
+""" 重采样索引不必完全与旧索引重叠,但是不对齐的部分需要填充 """
+# p(df111_11.resample('w-thu').asfreq())
+# p(df111_11.resample('w-thu').ffill())
 """ 通过时期重采样 """
+""" 时期的重采样要求频率必须有包含关系或平行关系,如Q-MAR只能升采样为A-MAR,A-JUN,A-SEP,A-DEC """
+# pri111_12=pd.period_range('2019-7',periods=10,freq='m')
+# df111_12=df(np.arange(10*4).reshape((10,4)),index=pri111_12)
+# p(df111_12)
+# p(df111_12.resample('a-dec').sum())
+# p(df111_12.resample('a-dec').sum().resample('q-dec',convention='start').ffill())
+# p(df111_12.resample('a-dec').sum().resample('q-dec',convention='end').ffill())
 """ 移动窗口函数 """
+# df111_13=pd.read_csv('d:/notes-python/examples/stock_px_2.csv',parse_dates=True,index_col=0)
+# slt111_13=df111_13[['AAPL','MSFT','XOM']]
+# slt111_13_rsp=slt111_13.resample('b').ffill()
+# slt111_13_rsp['AAPL'].plot()
+""" df.rolling方法根据索引,截取等长的移动窗口的数据并计算 """
+""" df.rolling方法默认需要窗口所有值为非null值,即最少需要与window参数等量的有效数据才会聚合;修改min_periods参数,则可以接受低于window个数的数据进行计算,在有offset参数时,默认min_period=1 """
+# mean_appl=slt111_13_rsp['AAPL'].rolling(window='50d',min_periods=1).mean()
+# mean_appl.plot()
+""" df.expanding方法与rolling方法类似,只不过是从最小时期开始,窗口长度不断扩大,属于累计窗口,而非等长窗口 """
+# mean_appl.expanding(min_periods=200).mean().plot()
+""" window参数接受整数和时长文本如上例的'50d' """
+#slt111_13_rsp.rolling(60).mean().plot(logy=True)
 """ 指数加权函数 """
+""" 指数加权函数df.ewm方法用于对时间值附加权重,使得不同时间的数据重要性不等
+   df.ewm方法中,span参数指的是根据时间跨度衰减权重;com参数指的是根据质心衰减,halflife指的是根据半衰期衰减 """
+# ma60=slt111_13_rsp.loc['2006':'2007','AAPL'].rolling(30,min_periods=20).mean()
+# ewma60=slt111_13_rsp.loc['2006':'2007','AAPL'].ewm(span=30).mean()
+# ma60.plot(style='k--',label='simple ma')
+# ewma60.plot(style='k-',label='ewma')
+# plt.legend()
 """ 二元移动窗口函数 """
+""" 例如相关系数,协方差等统计运算需要在两个时间序列执行 """
+# spx_rets=df111_13['SPX'].pct_change()
+# slt111_13_rsp_pct_change=slt111_13_rsp.pct_change()
+# slt111_13_rsp_pct_change_corr=slt111_13_rsp_pct_change.rolling(125,min_periods=100).corr(spx_rets)
+# slt111_13_rsp_pct_change_corr.plot()
 """ 用户定义的移动窗口函数 """
-
+""" rolling.apply方法可以使窗口值应用自定义函数 """
+# from scipy.stats import percentileofscore
+# s_at_2pct=lambda x:percentileofscore(x,0.02)
+# slt111_13_rsp_pct_change_apply=slt111_13_rsp_pct_change['AAPL'].rolling(250).apply(s_at_2pct)
+# slt111_13_rsp_pct_change_apply.plot()
+""" plt.legend用于给图像添加图例 """
+# plt.legend()
 """ 绘图和可视化 """
+""" pandas自带的绘图方法如df.plot和seaborn包都是基于matplotlib包设计的 """
 """ matplotlib入门 """
+""" matplotlib的图像都具体在figure对象的subplot中生成 """
 """ figure和subplot """
+# fig109_1=plt.figure()
+# """ figure的subplot从1开始索引计数 """
+# ax109_1=fig109_1.add_subplot(2,2,1)
+# ax109_2=fig109_1.add_subplot(2,2,2)
+# ax109_3=fig109_1.add_subplot(2,2,3)
+# ax109_1.hist(np.random.randn(100),bins=20,color='k',alpha=0.3)
+# ax109_2.scatter(np.arange(30),np.arange(30)+3*np.random.randn(30))
+# ax109_3.plot(np.random.randn(50).cumsum(),'k--')
+""" 利用plt.subplots函数同步赋值,生成一个figure对象和一个由其中subplot对象组成的ndarray数组,数组索引从0开始计数 """
 """ 调整subplot间距 """
+# fig109_2,axes109_2=plt.subplots(2,3,sharex=True,sharey=True)
+# p(fig109_2,axes109_2)
+""" subplots_adjust既是figure的方法,也是一个独立函数 """
+# for i in range(2):
+   # for j in range(3):
+      # axes109_2[i,j].hist(np.random.randn(500),bins=50,color='k',alpha=0.5)
+""" wspace和hspace用于控制subplot之间空白占整个figure的百分比 """
+# fig109_2.subplots_adjust(wspace=0, hspace=0)
+# plt.subplots_adjust(left=None,bottom=None, right=None, top=None,wspace=0.05, hspace=0.05)
 """ 颜色,标记和线型 """
 """ 刻度,标签和图例 """
+""" 生成单幅图表,可以直接使用plt.plot函数,图表颜色,标记和线型的参数分别如下,其中颜色参数接受常用颜色首字母和指定颜色码 """
+""" 线形图中非实际数据默认是线性插值,marker参数用于标记真实值,drawstyle参数修改插值方式 """
+# arr109_3=np.random.randn(30).cumsum()
+# plt.plot(arr109_3,linestyle='dashed',marker='.',color='k',label='default')
+# plt.plot(arr109_3,linestyle='--',marker='o',color='#DEABCF',drawstyle='steps-post',label='steps-post')
+""" plt.legend放置图例时,绝大多数情况下可以直接使用loc='best' """
+# plt.legend(loc='best')
 """ 设置标题,轴标签,刻度以及刻度标签 """
+# arr109_4=np.random.randn(1000).cumsum()
+# fig109_4,ax109_4=plt.subplots()
+# ax109_4.plot(arr109_4)
+# """ set_xticks设置标签所在位置 """
+# ax109_4.set_xticks([0,200,300,500,800,1000])
+# """ set_xticklabels设置标签名称 """
+# ax109_4.set_xticklabels(['base','first','second','third','fourth','final'],rotation=30,fontsize='medium')
+# prpty109_4={
+#            'title':"我的第一个图表标题 ",
+#            'xlabel':'steps'
+# }
+# ax109_4.set(**prpty109_4)
 """ 添加图例 """
+""" subplot.legend和plt.legend都可以设置图例,如果不设置label或label='nolegend'则不会生成图例 """
 """ 注解以及在subplot上绘图 """
-""" 将图表保存到文件 """
-""" matplotlib配置 """
-""" 使用pandas和seaborn绘图 """
-""" 线形图 """
-""" 柱状图 """
-""" 直方图和密度图 """
-""" 散布图或点图 """
-""" 分面网格和类型数据 """
+""" annotate待解 """
+# fig109_5 = plt.figure()
+# ax109_5 = fig109_5.add_subplot(1, 1, 1)
 
+# df109_5 = pd.read_csv('d:/notes-python/examples/spx.csv', index_col=0, parse_dates=True)
+# df109_5_spx = df109_5['SPX']
+
+""" 用pandas的df.plot方法生成图像 """
+# tb109_5=df109_5_spx.plot(ax=ax109_5,style='b-')
+""" ax.plot方法后续更新需要强制声明时间转换方法,因此不再适用 """
+# ax109_5.plot(df109_5_spx,'r-')
+
+# crisis_df109_5 = [
+#                   (dt(2007, 10, 11), '牛市巅峰'),
+#                   (dt(2008, 3, 12), 'Bear Stearns Fails'),
+#                   (dt(2008, 9, 15), '雷曼破产')
+#                   ]
+""" df.asof方法索引:如果索引存在且值非null,则返回目标值;如果索引不存在或值为null,则返回目标值前面最近的非null值;subset参数用于指定判断null值的列,默认为none,即全判断 """
+# for (date, label) in crisis_df109_5:
+#     ax109_5.annotate(
+#                label, 
+#                xytext=(
+#                         date, 
+#                         df109_5_spx.asof(date) + 225
+#                      ),
+#                xy=(
+#                      date,
+#                      df109_5_spx.asof(date) + 75
+#                   ),
+#                arrowprops=dict(
+#                                  facecolor='purple', 
+#                                  headwidth=4, 
+#                                  width=2,
+#                                  headlength=4
+#                               ),
+#                 horizontalalignment='left', 
+#                 verticalalignment='top'
+#                 )
+
+# Zoom in on 2007-2010
+""" set_xlim和set_ylim设置x轴和y轴起止值 """
+# ax109_5.set_xlim(['1/1/2007', '1/1/2011'])
+# ax109_5.set_ylim([600, 1800])
+
+# ax109_5.set_title('Important dates in the 2008-2009 financial crisis')
+# ax109_5.set(ylabel='标普指数',xlabel='时间点')
+""" 将图表保存到文件 """
+""" 保存全部图表至1个文件中 """
+# plt.savefig('d:/notes-python/examples/dates-in-financial-crisis-1.pdf',dpi=800,bbox_inches='tight')
+""" 保存指定图表 """
+# fig109_5.savefig('d:/notes-python/examples/dates-in-financial-crisis-2.pdf',dpi=800,bbox_inches='tight')
+# tb109_5.get_figure().savefig('d:/notes-python/examples/dates-in-financial-crisis-3.pdf',dpi=800,bbox_inches='tight')
+""" matplotlib配置 """
+""" plt.rc用于配置matplotlib的参数,详见import matplotlib段 """
+""" 使用pandas和seaborn绘图 """
+# sr109_6=sr(np.random.randn(10).cumsum(),index=np.arange(0,100,10))
+# fig109_6,axes109_6=plt.subplots(4,1)
+""" ax参数用于指定绘图subplot,没有指定时默认为当前subplot """
+# sr109_6.plot(ax=axes109_6[0],kind='line',figsize=(6,6))
+# sr109_6.plot(ax=axes109_6[1],kind='bar',figsize=(6,6))
+# sr109_6.plot(ax=axes109_6[2],kind='barh',figsize=(6,20))
+# sr109_6.plot(ax=axes109_6[3],kind='kde',figsize=(6,6))
+# fig109_6.subplots_adjust(left=None,bottom=None, right=None, top=None,wspace=0.1, hspace=0.3)
+""" 线形图 """
+""" df的绘图会自动在图表上创建图例,df.plot和sr.plot默认就是df.plot.line和sr.plot.line """
+""" df.plot中subplots=True则不同列分别绘制于不同subplot """
+""" 柱状图 """
+""" plot.bar用于绘制垂直条形图,plot.barh用于绘制水平条形图(此时横轴显示值,纵轴显示索引) """
+""" 柱状图中stacked=True则设置为堆积柱状图 """
+# df109_7=pd.read_csv('D:/notes-python/examples/tips.csv')
+# df109_7['tip_pct']=df109_7['tip']/(df109_7['total_bill']-df109_7['tip'])
+# p(df109_7.head())
+""" 使用seaborn绘图时,可以减少工作量,图片中柱状图显示的是平均数,而黑线表示默认的95%置信区间的取值范围(可以设置) """
+# sns.barplot(x=df109_7['tip_pct'],y=df109_7['day'],hue='smoker',data=df109_7,orient='h')
+# sns.set(style='whitegrid')
+""" 直方图和密度图 """
+""" 直方图histogram用于对散点值进行面元分析,密度图Kernel Density Estimate用于生成核密度估计 """
+# fig109_7,axes109_7=plt.subplots(3,1)
+# df109_7['tip_pct'].plot.hist(bins=50,ax=axes109_7[0])
+# df109_7['tip_pct'].plot.density(ax=axes109_7[1])
+""" sns绘制直方图和密度图 """
+# arr109_8_1=np.random.normal(0,1,200)
+# arr109_8_2=np.random.normal(10,2,200)
+# sr109_8=sr(np.concatenate([arr109_8_1,arr109_8_2]))
+# sns.distplot(sr109_8,100,color='k',ax=axes109_7[2])
+""" 散布图或点图 """
+# df109_9=pd.read_csv('D:/notes-python/examples/macrodata.csv')
+# df109_9_slt=df109_9[['cpi','m1','tbilrate','unemp']]
+# df109_9_slt_trans=np.log(df109_9_slt).diff().dropna()
+# p(df109_9_slt_trans[-5:])
+""" 使用sns的regplot方法制作散布图和线性回归线 """
+# sns.regplot('m1','unemp',data=df109_9_slt_trans)
+""" sns.pairplot用于在对角线上展示对应列的kde,在其他位置展现任意两两列的散点图 """
+# sns.pairplot(df109_9_slt_trans, diag_kind='kde', plot_kws={'alpha': 0.2})
+""" 分面网格和类型数据 """
+""" 分面网格用于比较展示分组数据 """
+# sns.factorplot(x='day', y='tip_pct', row='time',col='smoker',kind='bar', data=df109_7[df109_7['tip_pct'] < 1])
+""" 箱型图用于展示中位数,四分位数和异常值 """
+# sns.factorplot(x='tip_pct',y='day',kind='box',data=df109_7[df109_7['tip_pct']< 0.5])
 """ pandas高级应用 """
 """ 分类数据 """
 """ pandas的分类类型 """
