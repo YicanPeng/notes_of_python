@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
-p=print
+from pandas.tseries.offsets import Hour, Minute, Day, MonthEnd
+from dateutil.parser import parse as ps
+from datetime import datetime as dt, timedelta as td
+from pandas import Series as sr, DataFrame as df
+import matplotlib.pyplot as plt
+import numpy as np
+import statsmodels as sm
+import seaborn as sns
+import pandas as pd
+p = print
+""" autopep8指令如下 """
+""" autopep8 --in-place --aggressive --aggressive d:/notes-python/note-python001.py """
 """ 狭义的函数和变量的属性都是数值传递,复制运算;变量的方法是引用传递,就地运算 """
 """ 程序 = 数据结构 + 算法,数据结构分3种:排序,判断(选择),循环 """
 """ 递归算法本质是数学归纳法,函数在内部调用自身,即计算第N项与第N-1项的关系,而后一直倒推到第1项,也就是基例
@@ -16,7 +27,7 @@ p=print
 #     print("yes")
 # else:
 #     print('no')
-r""" python一条语句换行使用反斜杠\,换行后要缩进 """
+r""" python一条语句换行使用反斜杠\,括号内换行无需反斜杠\,换行后要缩进以保持结构统一 """
 r""" 反斜杠\也是文本字符转义符"""
 """ 文本引号前加r或R表示raw,反转义,使转义符和文本标点符(如换行符)无效 """
 """ 三引号字符串所见即所得 """
@@ -43,7 +54,7 @@ r""" 反斜杠\也是文本字符转义符"""
 """ 字符串,列表和数组可以同步成对赋值多个变量,但是变量的数量必须与列表和元组的元素数量相等 """
 """ 列表的追加.append,插入.insert,删除.remove,移除.pop(默认最后一项)"""
 # num001=1234;str001="runoob";tup001=(num001,str001,0)
-"""推导式语句: 自变量表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2 
+"""推导式语句: 自变量表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2
    推导式语句中 for...in...if... 相当于定语(状语)从句,因此多个并列子句不能加逗号隔开;
    多个for子句的嵌套遵循相同的for循环运算顺序,即外部大循环在前而内部小循环在后;
    python中多个变量逗号仅用于同步成对元素的同时赋值,详见zip函数和enumerate函数"""
@@ -53,7 +64,7 @@ r""" 反斜杠\也是文本字符转义符"""
 # str001[0]="x"
 # tup001[0]="a"
 # print(tup001[1][0])
-# print(lis001_1) 
+# print(lis001_1)
 # print(len(lis_001))
 # num002_0,num002_1,num002_2,num002_3,num002_4,num002_5="abcdefg"[0:-1]
 # print((num002_0)*3)
@@ -134,8 +145,8 @@ r""" 反斜杠\也是文本字符转义符"""
 # ite004_5_1=iter(zip004_5_1)
 # rev004_5_1=reversed(lis004_5_1)
 # lis004_5_1r=list(rev004_5_1)
-# zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4) 
-# dic004_5_1=dict(zip004_5_1) 
+# zip004_5_2=zip(lis004_5_1,lis004_5_2,tup004_5_3,tup004_5_4)
+# dic004_5_1=dict(zip004_5_1)
 # p(dic004_5_1) #输出为空
 # dic004_5_2={}
 """ 以下示例中第1句,第2句有效,而第3句,第4句运算无效,zip和enu函数只能以tuple展开或即写即用(enumerate,map,reversed同理) """
@@ -143,7 +154,7 @@ r""" 反斜杠\也是文本字符转义符"""
 # for k,v in tup004_5_1:
 # for k,v in lis004_5_1z:
 # for k,v in zip004_5_1:
-   # dic004_5_2[k]=v
+# dic004_5_2[k]=v
 # print(dic004_5_2)+
 # print(rev004_5_1)
 # print(lis004_5_1r)
@@ -198,7 +209,7 @@ r""" 反斜杠\也是文本字符转义符"""
 #    print("发现文本",str005_1)
 # else:
 #    print("查找完毕")
-""" continue不执行本轮循环剩余语句 """    
+""" continue不执行本轮循环剩余语句 """
 # for str005_2 in "asdfgh":
 #    if str005_2 == "f":
 #       continue
@@ -214,11 +225,11 @@ r""" 反斜杠\也是文本字符转义符"""
 # ite006_1=iter(lis006_1)
 # print(next(ite006_1),next(ite006_1),sep=",")
 # for n in ite006_1:
-   # print(n)
+# print(n)
 """ 自定义类中使用__iter__()和__next__()内置函数构造迭代器属性,详见自定义类 """
 """ 自定义函数中使用yield关键字,可通过内置循环条件生成可迭代的yield对象,且不占用内存,详见自定义类
    这类自定义函数被称为生成器generator """
-""" 推导式可以用于构造生成器推导式,小括号()是生成器标识符: (函数语句 for 变量范围 if 子句) 
+""" 推导式可以用于构造生成器推导式,小括号()是生成器标识符: (函数语句 for 变量范围 if 子句)
    下例使用中括号[],则生成列表,而非生成器"""
 # gen006=(x*y for x in range(3) for y in range(3))
 # print(next(gen006))
@@ -235,17 +246,17 @@ r""" 反斜杠\也是文本字符转义符"""
 """ 自定义函数最好以return结尾,而且python中return可以返回多个值 """
 """ 调用函数时,不带括号则调用的是函数对象;带括号调用,则调用的是函数单次运行的结果(如果有必要参数则必须输入参数) """
 # def double_aster(**a):
-   # print(a)
+# print(a)
 # double_aster(b=2,c=5)
 # def fibo(l=100,*m,n=100):
-   # a,b=0,1
-   # list_fibo=[]
-   # n = int(n)
-   # while b<l+n:
-      # list_fibo.append(b)
-      # a,b=b,a+b 
-   # print(m)
-   # return list_fibo
+# a,b=0,1
+# list_fibo=[]
+# n = int(n)
+# while b<l+n:
+# list_fibo.append(b)
+# a,b=b,a+b
+# print(m)
+# return list_fibo
 """ 交叉赋值,同时赋值是python特色之一 """
 """ 本例中第3参数n必须使用索引名赋值 """
 # print(fibo(100,n=1))
@@ -295,7 +306,7 @@ r""" 反斜杠\也是文本字符转义符"""
 # for k,v in lis008_1:
 # for k,v in ite008_1:
 #    print(k)
-   # print(next(k))
+# print(next(k))
 # for k,v in dic008_1.items():
 #    print(k,v)
 """ lambda 变量1,变量2,变量3... : 表达式 语句用于创建简单的匿名函数,仅可以使用自身参数变量 """
@@ -303,7 +314,12 @@ r""" 反斜杠\也是文本字符转义符"""
    lambda函数自变量参数在前,冒号连接,表达式在后
    推导式表达式在前,for 定义域在后 """
 """列表推导式语句:[表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2] """
-sm = lambda x,y,z : x+y+z
+
+
+# def sm(x, y, z): 
+#    return x + y + z
+
+
 """ lambda也可以用于柯里化currying一个已有函数,固定其中某个参数,以生成新函数 """
 # sm_1=lambda x : sm(1,1,x)
 # print(sm(1,2,3))
@@ -354,25 +370,25 @@ sm = lambda x,y,z : x+y+z
 """ 注释不要打断缩进关系树,如本例中从class下穿和def连接def的纵线 """
 """ 自定义类的外部参数在init函数中赋值,并参与类的方法参与运算 """
 # class Vector:
-   # """ 自定义类的函数第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
-   # """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
-   # """ 私有方法以双下划线开头__私有名称__双下划线结尾 """
-   # """ __init__内置属性用于自定义类的初始化,并限定其参数 """
-   # def __init__(self, a, b):
-   #    self.a = a
-   #    self.b = b
-   # def __str__(self):
-   #    return 'Vector (%d, %d)' % (self.a, self.b)
-   # """ 注释只能与代码块主句对齐,不能与子句缩进 """
-   # """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用类的基础运算符
-   # 本例为使用加号运算符 """
-   # def __add__(self,other):
-   #    return Vector(self.a + other.a, self.b + other.b)
-   # """ self参数代表的是类的实例(也就是变量),而非类本身 """
-   # def prt(self):
-   #    print(self)
-   #    print(self.__class__)
-   #    print(self.__str__.__doc__)
+# """ 自定义类的函数第一个参数是方法的实例自身,惯例命名为self,不推荐随意命名 """
+# """ 自定义类有若干内置的私有方法和属性,即使没有声明也可以内部调用,包括init,class,name,main """
+# """ 私有方法以双下划线开头__私有名称__双下划线结尾 """
+# """ __init__内置属性用于自定义类的初始化,并限定其参数 """
+# def __init__(self, a, b):
+#    self.a = a
+#    self.b = b
+# def __str__(self):
+#    return 'Vector (%d, %d)' % (self.a, self.b)
+# """ 注释只能与代码块主句对齐,不能与子句缩进 """
+# """ 运算符重载也是内置的私有方法,使得类可以按照自定义的方法使用类的基础运算符
+# 本例为使用加号运算符 """
+# def __add__(self,other):
+#    return Vector(self.a + other.a, self.b + other.b)
+# """ self参数代表的是类的实例(也就是变量),而非类本身 """
+# def prt(self):
+#    print(self)
+#    print(self.__class__)
+#    print(self.__str__.__doc__)
 """ 自定义类的第一个参数必须是实例本身,即使是无参方法,也必须声明实例本身作为参数 """
 """ 自定义类从第二个参数开始,才是真正的参数 """
 # v1 = Vector(2,10)
@@ -380,7 +396,7 @@ sm = lambda x,y,z : x+y+z
 # v3 = Vector(1,2)
 # print(v1+v2+v3)
 # print(v1)
-""" 文件引用自身内置属性和方法,无需前缀,__name__属性永远是__main__ 
+""" 文件引用自身内置属性和方法,无需前缀,__name__属性永远是__main__
    由于模块第一次被引入时模块的主程序main必定会被执行
    在自定义类时,可以通过判断name属性是否为main,限定类只能在模块被整体引入时才能执行 """
 # print(__name__)
@@ -389,24 +405,24 @@ sm = lambda x,y,z : x+y+z
 # v1.prt()
 """ 自定义类使用__iter__,__next__内置函数,使自定义类具备迭代属性 """
 # class iteration001:
-   # """ 自定义类中,参数必须赋值为self.属性才能参与其他函数运算,无论该参数是否是私有参数 """
-   # def __init__(self,y=1,x=5):
-      # self.y = y
-      # self.x = x
-      # self.a = 0
-   # """ 即使无返回值,函数最好以return语句结尾;自定义类中,如果无返回值,只是定义私有属性,则return self """  
-   # def __iter__(self):
-      # return self
-   # """ 本例中使用条件语句触发raise stopiteration终止迭代 """
-   # """ python3中,迭代器不再有.next属性,只有next函数,所以只能使用__next__私有属性,而非可以被外部调用的.next公有属性 """
-   # """ 本例中迭代返回值是self.a计数器 """
-   # def __next__(self):
-      # if self.a <self.x * self.y:
-         # x = self.a
-         # self.a += self.y
-         # return x
-      # else:
-         # raise StopIteration
+# """ 自定义类中,参数必须赋值为self.属性才能参与其他函数运算,无论该参数是否是私有参数 """
+# def __init__(self,y=1,x=5):
+# self.y = y
+# self.x = x
+# self.a = 0
+# """ 即使无返回值,函数最好以return语句结尾;自定义类中,如果无返回值,只是定义私有属性,则return self """
+# def __iter__(self):
+# return self
+# """ 本例中使用条件语句触发raise stopiteration终止迭代 """
+# """ python3中,迭代器不再有.next属性,只有next函数,所以只能使用__next__私有属性,而非可以被外部调用的.next公有属性 """
+# """ 本例中迭代返回值是self.a计数器 """
+# def __next__(self):
+# if self.a <self.x * self.y:
+# x = self.a
+# self.a += self.y
+# return x
+# else:
+# raise StopIteration
 
 # cls001=iteration001(1,5)
 # ite008_1=iter(cls001)
@@ -418,28 +434,28 @@ sm = lambda x,y,z : x+y+z
    super函数可以调用子类的父类同名函数 """
 """ 以下示例中展示了format函数的和字典参数的联用,format函数和列表参数的联用 """
 # class people:
-    #定义基本属性
-   #  name = ''
-   #  age = 0
-    #定义私有属性,私有属性在类外部无法直接进行访问
-   #  __weight = 0
-    #定义构造方法
-   #  def __init__(self,n,a,w):
-      #   self.name = n
-      #   self.age = a
-      #   self.__weight = w
-   #  def speak(self):
-   #      print("%s 说: 我 %d 岁。" %(self.name,self.age))
+# 定义基本属性
+#  name = ''
+#  age = 0
+# 定义私有属性,私有属性在类外部无法直接进行访问
+#  __weight = 0
+# 定义构造方法
+#  def __init__(self,n,a,w):
+#   self.name = n
+#   self.age = a
+#   self.__weight = w
+#  def speak(self):
+#      print("%s 说: 我 %d 岁。" %(self.name,self.age))
 # class student(people):
-   #  grade = ''
-   #  def __init__(self,n,a,w,g):
-        #调用父类的构函
-      #   people.__init__(self,n,a,w)
-      #   self.grade = g
-    #覆写父类的speak方法
-   #  def speak(self):
-        #本例中大括号{}内第一个0不可省略,表示format的参数索引序数
-      #   print("{0[0]} 说: 我 {0[1]} 岁了，我在读 {0[2]} 年级".format([self.name,self.age,self.grade]))
+#  grade = ''
+#  def __init__(self,n,a,w,g):
+# 调用父类的构函
+#   people.__init__(self,n,a,w)
+#   self.grade = g
+# 覆写父类的speak方法
+#  def speak(self):
+# 本例中大括号{}内第一个0不可省略,表示format的参数索引序数
+#   print("{0[0]} 说: 我 {0[1]} 岁了，我在读 {0[2]} 年级".format([self.name,self.age,self.grade]))
 # class speaker():
 #     topic = ''
 #     name = ''
@@ -447,18 +463,18 @@ sm = lambda x,y,z : x+y+z
 #         self.name = n
 #         self.topic = t
 #         self.age=a
-      #   self.properties008={"q":self.name,"w":self.topic,"e":self.age}
-   #  def speak(self):
-      #   print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
+#   self.properties008={"q":self.name,"w":self.topic,"e":self.age}
+#  def speak(self):
+#   print("我叫 {q}，我今年{e}岁,是一个演说家，我演讲的主题是 {w}".format(**self.properties008))
 """ 文本.format函数,文本内大括号{}如果是数字索引,则仅是format参数的位置索引,不能作为参数标识符 """
 """ 此处使用双**号使参数以字典的形式引入函数中 """
 # class sample(student,speaker):
 # 切换不同顺序则父类不同
 # class sample(speaker,student):
-   #  a =''
-   #  def __init__(self,n,a,w,g,t):
-      #   student.__init__(self,n,a,w,g)
-      #   speaker.__init__(self,n,t,a)
+#  a =''
+#  def __init__(self,n,a,w,g,t):
+#   student.__init__(self,n,a,w,g)
+#   speaker.__init__(self,n,t,a)
 # test = sample("Tim",25,80,4,"Python")
 """ 方法名同，默认调用的是在括号中排前的父类的方法 """
 # test.speak()
@@ -499,30 +515,29 @@ sm = lambda x,y,z : x+y+z
 """ 当使用某个打开后必须要关闭的对象(主要是file对象)时,使用with语句可以简化代码 """
 
 """ 数据分析入门 """
-import numpy as np 
-import matplotlib.pyplot as plt 
-plt_font = {'family' : 'SimHei',
-        'weight' : 'bold',
-        'size'   : '12'}
+plt_font = {
+            'family': 'SimHei',
+            'weight': 'bold',
+            'size': '12'
+            }
 plt.rc('font', **plt_font)               # 步骤一（设置字体的更多属性）
 plt.rc('axes', unicode_minus=False)  # 步骤二（解决坐标轴负数的负号显示问题）
-import pandas as pd
-from pandas import Series as sr,DataFrame as df
-import seaborn as sns
-import statsmodels as sm
 """ 自定义isiterable函数以后使用 """
+
+
 def isiterable(ele):
-   try:
-      iter(ele)
-      return True
-   except TypeError:
-      return False
+    try:
+        iter(ele)
+        return True
+    except TypeError:
+        return False
+
 
 """ 番外篇:装饰器 """
 """ 装饰器用于在不改变已有函数内部结构的前提下,把原函数作为参数嵌套进装饰器函数中,函数原地重命名 """
 """ 装饰器函数必须闭包,所以1.装饰器必须内嵌函数,2.return内嵌函数3.return内嵌函数不加括号 """
 """ 本例中通过添加*和**,使得装饰器可以装饰在有任意类型参数的函数上 """
-# def greet001(b="王凤"):   
+# def greet001(b="王凤"):
 #    def middle(f):
 #       def inner(*x,**y):
 #          p("Hello",b,sep=",",end="!\n")
@@ -676,6 +691,7 @@ def isiterable(ele):
       axis的理解类似物理学上的横波:波的行进方向和波的能量方向垂直,
       中选定的axis是迭代方向(外循环),而其他axis则成为一个整体,是运算方向(内循环)
       series与pd运算时,series与选定的axis平行 """
+""" 指定的axis在降维运算结果中消失 """
 # pd和numpy采用了不同的axis思路
 """ 聚合函数,.apply方法和与series的广播运算,.fillna中,axis表示运算方向(按axis作为一个整体执行运算),在.drop和.dropna中,axis表示查找方向 """
 """ pd中sr永远输出为纵向,但是对齐只看下标,不看维度,;每次运算,axis=0列索引先取参数或构成外循环,行索引构成内循环,外循环输出为结果
@@ -757,7 +773,7 @@ def isiterable(ele):
 # path = os.path.abspath(os.path.dirname(sys.argv[0]))
 # p(path)
 # df102_16=pd.read_csv("d:/notes-python/examples/ex1.csv")
-r""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\” 
+r""" “/”：表示根目录，在windows系统下表示某个盘的根目录，如“E:\”
    “./”：一个点表示当前目录；（表示当前目录时，也可以去掉“./”，直接写文件名或者下级目录）
    “../”：两个点表示上级目录。"""
 """ 本例需要把pwd转移至本py文件所在文件夹才能使用相对路径
@@ -770,16 +786,16 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 """ csv.reader是成行读取csv文件 """
 """ zip(*values)是把values垂直解压 """
 # with open("examples/ex7.csv") as f102_17:
-   # csv102_17=csv.reader(f102_17)
-   # lines=list(csv102_17)
-   # header,values = lines[0],lines[1:]
-   # p(header)
-   # p(values)
-   # data_dict={k:v for k,v in zip(header,values)}
-   # data_dict={k:v for k,v in zip(header,zip(*values))}
-   # p(repr(zip(*values)))
-   # df102_17=df(data_dict)
-   # p(df102_17)
+# csv102_17=csv.reader(f102_17)
+# lines=list(csv102_17)
+# header,values = lines[0],lines[1:]
+# p(header)
+# p(values)
+# data_dict={k:v for k,v in zip(header,values)}
+# data_dict={k:v for k,v in zip(header,zip(*values))}
+# p(repr(zip(*values)))
+# df102_17=df(data_dict)
+# p(df102_17)
 """ 版本警告:read_table即将删除 """
 """ 利用read_table读写文件 """
 # df106_22=pd.read_table("d:/notes-python/examples/ex2.csv",sep=',',header=None,names=['a','b','c','d','message'],index_col='message')
@@ -802,7 +818,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 """ pandas读写MySQL """
 # import pymysql
 # import sqlalchemy
-# from sqlalchemy import create_engine 
+# from sqlalchemy import create_engine
 # info_conn_to_mysql='mysql+pymysql://{0}:{1}@{2}:{3}/{4}?charset=utf8'.format('root','1234','localhost','3306','runoob')
 # engine_mysql=create_engine(info_conn_to_mysql)
 # cmd_sql='select * from tb1'
@@ -824,7 +840,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 """ 指定删除列 """
 # p(df102_19)
 # p(df102_19.dropna(axis=1,how="all"))
-""" 填充缺失值fillna方法 
+""" 填充缺失值fillna方法
     fillna可以接受series参数 """
 """ 可以设置inplace参数=True就地运算 """
 # p(df102_19.fillna("a"))
@@ -866,7 +882,7 @@ r""" “/”：表示根目录，在windows系统下表示某个盘的根目录�
 """ pd.cut和pd.qcut函数,默认左开右闭,可以设置right=false改为左闭右开 """
 # lis102_21 = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
 # bin102_21=[0,25,30,35,50,100]
-""" pd.cut返回值是一个categorical对象,可以视作由分类标签labels构成的字符串 """
+""" pd.cut返回值是一个category对象,可以视作由分类标签labels构成的字符串 """
 # ct102_21_1=pd.cut(lis102_21,bin102_21,labels=list('qwert'))
 # p(ct102_21_1)
 # p(ct102_21_1.codes)
@@ -988,6 +1004,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ 把列转换为索引 """
 # df108_3 = df({'a': range(7), 'b': range(7, 0, -1),'c': ['one', 'one', 'one', 'two', 'two', 'two', 'two'], 'd': [0, 1, 2, 0, 1, 2, 3]})
 """ df.set_index方法可以把df内的列转为索引,可以设置drop=false,使得成为索引的列不删除 """
+""" df.reset_index与set_index互为逆操作,reset_index把索引重新转为列 """
 # df108_3_1 = df108_3.set_index(['c','d'])
 # df108_3_2 = df108_3.set_index(['c','d'],drop=False)
 # df108_3_3 = df108_3_1.reset_index()
@@ -1064,7 +1081,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ df.pivot和pd.melt是根据列进行维度变换 """
 """ 长格式转为宽格式(一维表透视为二维表)df.pivot """
 """ 宽格式转为长格式(二维表逆透视为一维表)pd.melt """
-# df108_25=df({'z':[0,1,2],'x':[3,4,5],'c':[6,7,8],'k':list('qwe')})
+# df108_25=df({'z':[0,1,2],'x':[3,4,5],'k1':list('asd'),'k2':list('qwe')})
 """ pd.melt中id_vars指定转为次级行索引的列(可以通过reset_index方法转为列),value_vars指定数值列,variable是自动生成的索引辅助列,value是自动生成的一维值列 """
 # df108_25_m=pd.melt(df108_25,id_vars=['x'],value_vars=['z','k'])
 """ df.pivot中index指定转为行索引的列(可以通过reset_index方法转为列),columns指定转为列索引的列,values指定数值列 """
@@ -1088,8 +1105,8 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 # p(gp110_1.size())
 # gp110_2=df110_1[['v1','v2']].groupby([df110_1['k1'],df110_1['k2']])
 # for [i,v] in gp110_2:
-   # p(i)
-   # p(v)
+# p(i)
+# p(v)
 """ get_group()用于读取指定索引的gp对象内的元素 """
 # p(gp110_2.get_group(('q','a')))
 # p(gp110_2['v1'].mean())
@@ -1123,7 +1140,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ by参数输入的函数会把索引作为参数自动代入函数进行计算,并以返回值进行分类,函数不能加括号,类似apply """
 # df110_6 = df(np.arange(25).reshape((5, 5)), columns=['a', 'b', 'c', 'd', 'e'],index=['Joe', 'Steve', 'Wes', 'Jim', 'Travis'])
 # lis110_6 = list('qqqww')
-""" groupby的by参数接受函数分组,字典分组,列表索引,series分组,pd.cut和pd.qcut生成的categorical对象混用 """
+""" groupby的by参数接受函数分组,字典分组,列表索引,series分组,pd.cut和pd.qcut生成的category对象混用 """
 # gp110_6 = df110_6.groupby(by=[len,lis110_6])
 # p(df110_6)
 # p(gp110_6.count())
@@ -1144,7 +1161,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ quantile是series方法,但是因为group对象的元素是series,所以也适用 """
 # p(gp110_8.quantile(0.8))
 # def gp_max(x):
-   # return x.max()
+# return x.max()
 # p(gp110_8.aggregate(gp_max))
 # p(gp110_8.describe())
 """ 面向列的多函数应用 """
@@ -1165,7 +1182,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ apply:一般性的拆分,应用,合并 """
 """ 左闭右开索引,待解? """
 # def gp_top(frm,n=5,column='tips_percent'):
-   # return frm.sort_values(by=column,ascending=False)[:n]
+# return frm.sort_values(by=column,ascending=False)[:n]
 # p(gp_top(df110_9,n=6))
 """ apply应用函数时,被应用函数参数与函数名应当并列赋值 """
 """ groupby.apply应用聚合函数时,默认把分组依据和原始索引合并为层次化索引,设置group_keys参数可以关闭 """
@@ -1194,7 +1211,6 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 
 """ 时间序列 """
 """ 日期和时间数据类型及工具 """
-from datetime import datetime as dt,timedelta as td
 """ datetime数据格式以毫秒储存时间,以timedelta格式表示两个datetime数据的时间差 """
 # p(dt.now())
 # p(dt.now().year)
@@ -1205,7 +1221,6 @@ from datetime import datetime as dt,timedelta as td
 """ 字符串和datetime相互转换 """
 """ dt.strptime函数可以把字符串转为dt数据 """
 # p(dt.strptime('2019-7-8','%Y-%m-%d'))
-from dateutil.parser import parse as ps 
 """ parse是比dt.strptime函数更简易的日期字符串解析包,但parse包更容易出错;设置dayfirst参数,可以声明字符串是'日月年'日期格式 """
 # p(ps('8-7-2019',dayfirst=True))
 """ 数据戳的null值是nat not a number """
@@ -1233,7 +1248,6 @@ from dateutil.parser import parse as ps
 """ pd.date_range默认保留时分秒,可以通过normalize参数关闭 """
 # p(pd.date_range(start='2018/1/1 15:24:17',end='2019/7/10',freq='BQS-AUG',normalize=True))
 """ 频率和日期偏移量 """
-from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
 """ 时间序列的基础频率是类似以上引入的Hour和Minute,但日常使用时只需要设立整数倍的基础频率即可 """
 # p(pd.date_range(start='2019/7/10 15:43:13',periods=3,freq='1h30t'))
 """ wom日期 """
@@ -1346,7 +1360,7 @@ from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
 """ df.expanding方法与rolling方法类似,只不过是从最小时期开始,窗口长度不断扩大,属于累计窗口,而非等长窗口 """
 # mean_appl.expanding(min_periods=200).mean().plot()
 """ window参数接受整数和时长文本如上例的'50d' """
-#slt111_13_rsp.rolling(60).mean().plot(logy=True)
+# slt111_13_rsp.rolling(60).mean().plot(logy=True)
 """ 指数加权函数 """
 """ 指数加权函数df.ewm方法用于对时间值附加权重,使得不同时间的数据重要性不等
    df.ewm方法中,span参数指的是根据时间跨度衰减权重;com参数指的是根据质心衰减,halflife指的是根据半衰期衰减 """
@@ -1388,8 +1402,8 @@ from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
 # p(fig109_2,axes109_2)
 """ subplots_adjust既是figure的方法,也是一个独立函数 """
 # for i in range(2):
-   # for j in range(3):
-      # axes109_2[i,j].hist(np.random.randn(500),bins=50,color='k',alpha=0.5)
+# for j in range(3):
+# axes109_2[i,j].hist(np.random.randn(500),bins=50,color='k',alpha=0.5)
 """ wspace和hspace用于控制subplot之间空白占整个figure的百分比 """
 # fig109_2.subplots_adjust(wspace=0, hspace=0)
 # plt.subplots_adjust(left=None,bottom=None, right=None, top=None,wspace=0.05, hspace=0.05)
@@ -1435,27 +1449,27 @@ from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
 #                   (dt(2008, 3, 12), 'Bear Stearns Fails'),
 #                   (dt(2008, 9, 15), '雷曼破产')
 #                   ]
-""" df.asof方法索引:如果索引存在且值非null,则返回目标值;如果索引不存在或值为null,则返回目标值前面最近的非null值;subset参数用于指定判断null值的列,默认为none,即全判断 """
+""" df.asof方法索引:如果索引存在且值非null,则返回目标值;如果索引不存在或值为null,则返回目标值前面最近的非null值;asof的subset参数用于指定判断null值的列,默认为none,即全判断 """
 # for (date, label) in crisis_df109_5:
 #     ax109_5.annotate(
-#                label, 
-#                xytext=(
-#                         date, 
-#                         df109_5_spx.asof(date) + 225
-#                      ),
-#                xy=(
-#                      date,
-#                      df109_5_spx.asof(date) + 75
-#                   ),
-#                arrowprops=dict(
-#                                  facecolor='purple', 
-#                                  headwidth=4, 
-#                                  width=2,
-#                                  headlength=4
+#                      label,
+#                      xytext=(
+#                               date,
+#                               df109_5_spx.asof(date) + 225
 #                               ),
-#                 horizontalalignment='left', 
-#                 verticalalignment='top'
-#                 )
+#                      xy=(
+#                         date,
+#                         df109_5_spx.asof(date) + 75
+#                         ),
+#                      arrowprops=dict(
+#                                     facecolor='purple',
+#                                     headwidth=4,
+#                                     width=2,
+#                                     headlength=4
+#                                     ),
+#                      horizontalalignment='left',
+#                      verticalalignment='top'
+#                      )
 
 # Zoom in on 2007-2010
 """ set_xlim和set_ylim设置x轴和y轴起止值 """
@@ -1466,10 +1480,10 @@ from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
 # ax109_5.set(ylabel='标普指数',xlabel='时间点')
 """ 将图表保存到文件 """
 """ 保存全部图表至1个文件中 """
-# plt.savefig('d:/notes-python/examples/dates-in-financial-crisis-1.pdf',dpi=800,bbox_inches='tight')
+# plt.savefig('d:/notes-python/output/dates-in-financial-crisis-1.pdf',dpi=800,bbox_inches='tight')
 """ 保存指定图表 """
-# fig109_5.savefig('d:/notes-python/examples/dates-in-financial-crisis-2.pdf',dpi=800,bbox_inches='tight')
-# tb109_5.get_figure().savefig('d:/notes-python/examples/dates-in-financial-crisis-3.pdf',dpi=800,bbox_inches='tight')
+# fig109_5.savefig('d:/notes-python/output/dates-in-financial-crisis-2.pdf',dpi=800,bbox_inches='tight')
+# tb109_5.get_figure().savefig('d:/notes-python/output/dates-in-financial-crisis-3.pdf',dpi=800,bbox_inches='tight')
 """ matplotlib配置 """
 """ plt.rc用于配置matplotlib的参数,详见import matplotlib段 """
 """ 使用pandas和seaborn绘图 """
@@ -1519,21 +1533,126 @@ from pandas.tseries.offsets import Hour,Minute,Day,MonthEnd
 # sns.factorplot(x='tip_pct',y='day',kind='box',data=df109_7[df109_7['tip_pct']< 0.5])
 """ pandas高级应用 """
 """ 分类数据 """
+# sr112_1_1=sr([0,1,0,0]*2)
+# sr112_1_2=sr(['Apple','Microsoft'])
+# p(sr112_1_1)
+""" sr.take方法表示按照take参数,从sr进行索引 """
+# p(sr112_1_2.take(sr112_1_1))
 """ pandas的分类类型 """
+# df112_2=df({
+#             'brand':['Microsoft','Microsoft','Apple','Microsoft']*2,
+#             'count':np.random.randint(3,15,8),
+#             'price':np.random.uniform(0,4,8)
+#             })
+# p(df112_2)
+# sr_112_2_cat=df112_2['brand'].astype('category')
+# p(sr_112_2_cat.values)
+# p(sr_112_2_cat.values.categories)
+# p(sr_112_2_cat.values.codes)
+# df112_2['brand']=sr_112_2_cat
+# p(df112_2)
 """ 用分类进行计算 """
+""" 使用pd.categorical生成category对象 """
+# ctgr112_3_0=pd.Categorical(list('qwertwer'))
+# p(ctgr112_3_0)
+""" 使用pd.categorical.from_code生成分类category对象,ordered参数声明排序 """
+# ctgr112_3_source=['Microsoft','Apple','Google']
+# cd112_3=[0,2,1,2,1,0]
+# cgtr112_3_1=pd.Categorical.from_codes(cd112_3,ctgr112_3_source,ordered=True)
+# cgtr112_3_2=pd.Categorical.from_codes(cd112_3,ctgr112_3_source)
+# p(cgtr112_3_1)
+""" 未排序分类,可以通过as_ordered方法排序 """
+# p(cgtr112_3_2)
+# p(cgtr112_3_2.as_ordered())
 """ 用分类提高性能 """
+""" category对象实际是由codes和categories组成的字典
+   把对象型数据转换为categorical数据类型后
+   对象型数据变成整数型(利用字典映射到实际值),占用内存更少,groupby运行速度更快 """
 """ 分类方法 """
+""" 最常生成category对象的是pd.cut函数和pd.qcut函数 """
+# np.random.seed(1234)
+# arr112_4=np.random.randn(1000)
+# arr112_4_bins=pd.qcut(arr112_4,4,
+#                      labels=['q1','q2','q3','q4']
+#                      )
+# p(arr112_4_bins.codes[:10])
+# sr112_4=sr(arr112_4)
+# gp112_4=sr112_4.groupby(arr112_4_bins)
+# df112_4=gp112_4.agg(['min','count','max'])
+# p(df112_4)
+# p(df112_4.index)
+""" 已经分类的category对象,可以通过sr.cat.set_categories修改 """
+""" .cat另有.cat.addcategories,.remove_unused_categories等方法"""
+# sr112_5_1=sr(list('abcd')*2,dtype='category')
+# p(sr112_5_1.cat.codes)
+# p(sr112_5_1.value_counts())
+# sr112_5_2=sr112_5_1.cat.set_categories(list('abcde'))
+# p(sr112_5_2.value_counts())
 """ 为建模创建虚拟变量 """
+""" 对一维数据进行哑变量运算,可以创建虚拟变量,详见pd.get_dummies函数 """
 """ groupby高级应用 """
 """ 分组转换和解封groupby """
+""" groupby除了group.apply方法还有group.transform方法,transform方法返回与输入形状相同的数组,且是复制运算 """
+# df112_6=df({'k':list('abc')*4,'v':np.arange(12)})
+# gp112_6=df112_6.groupby('k')['v']
+# p(gp112_6.transform(lambda x : x.mean()))
+# def Normalize(x):
+#    return (x-x.mean())/x.std()
+# p(gp112_6.transform(Normalize))
+""" 解封是一种直接使用分组聚合结果的操作 """
+# result112_6=(df112_6['v']-gp112_6.transform('mean'))/gp112_6.transform('std')
+# p(result112_6)
 """ 分组的时间重采样 """
+""" 除了.resample方法外,也可以通过创建timegrouper对象进行时间序列作为索引的df或sr的分组, """
+# num112_7=15
+# time112_7=pd.date_range('2019/7/15 16:50:44',freq='1t',periods=num112_7)
+# df112_7=df({
+#             't':time112_7.repeat(3),
+#             'k':np.tile(
+#                         list('abc'),
+#                         num112_7),
+#             'v':np.arange(num112_7*3)
+#             })
+# tk112_7=pd.TimeGrouper('5t')
+# gp112_7=df112_7.set_index('t').groupby(['k',tk112_7])
+# gp112_7_sum_1=gp112_7.sum()
+# p(gp112_7_sum_1)
 """ 链式编程技术 """
+""" 无需赋值中间变量,多步连续调用函数或方法,通过外加小括号()实现换行以增加可读性 """
+# gp112_7_sum_2=(
+#                df112_7
+#                .set_index('t')
+#                .groupby(['k',tk112_7])
+#                .sum()
+#                )
+# p(gp112_7_sum_2)
 """ 管道方法 """
+""" 当需要多步连续调用自定义函数或第三方库函数时,可以使用df.pipe方法,以避免赋值中间变量 """
+# df112_8=df({'k':list('abc')*4,'v':np.arange(12)})
+# def df_top_112(x,n=1):
+#    return x.sort_values(ascending=False)[:n]
+# def df_bottom_112(x,n=1):
+#    return x.sort_values()[:n]
+# result112_8=df112_8['v'].pipe(df_top_112,n=7).pipe(df_bottom_112,n=3)
+# p(result112_8)
 
 """ 数据分析案例 """
 """ 解析json数据 """
 """ 用movielens数据 """
 """ 全美婴儿姓名 """
+years = range(1880, 2011)
+lis114_1 = []
+cols114_1 = ['name', 'sex', 'births']
+for year in years:
+    txt_path = 'd:/notes-python/examples/datasets/babynames/yob{}.txt'.format(
+        year)
+    df114_1 = pd.read_csv(txt_path, names=cols114_1)
+
+    df114_1['year'] = year
+    lis114_1.append(df114_1)
+df114_2 = pd.concat(lis114_1, ignore_index=True)
+total_birth=df114_2.pivot_table('births',index='year',columns='sex',aggfunc=sum)
+p(total_birth.tail())
+total_birth.plot(title='按性别和年份区分总出生人口')
 """ usda食品数据库 """
 """ 联邦选举委员会数据库 """
-
