@@ -1,13 +1,26 @@
 # -*- coding: utf-8 -*-
-from pandas.tseries.offsets import Hour, Minute, Day, MonthEnd
-from dateutil.parser import parse as ps
-from datetime import datetime as dt, timedelta as td
-from pandas import Series as sr, DataFrame as df
+from datetime import datetime as dt
+from datetime import timedelta as td
+
 import matplotlib.pyplot as plt
 import numpy as np
-import statsmodels as sm
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
+import statsmodels as sm
+from dateutil.parser import parse as ps
+from pandas import DataFrame as df
+from pandas import Series as sr
+from pandas.tseries.offsets import Day, Hour, Minute, MonthEnd
+
+plt_font = {
+    'family': 'SimHei',
+    'weight': 'bold',
+    'size': '12'
+}
+plt.rc('font', **plt_font)               # 步骤一（设置字体的更多属性）
+plt.rc('axes', unicode_minus=False)  # 步骤二（解决坐标轴负数的负号显示问题）
+
+""" 自定义isiterable函数以后使用 """
 p = print
 """ autopep8指令如下 """
 """ autopep8 --in-place --aggressive --aggressive d:/notes-python/note-python001.py """
@@ -316,7 +329,7 @@ r""" 反斜杠\也是文本字符转义符"""
 """列表推导式语句:[表达式 for 自变量1 in 范围1 if 条件句1 自变量2 in 范围2 if 条件句2] """
 
 
-# def sm(x, y, z): 
+# def sm(x, y, z):
 #    return x + y + z
 
 
@@ -515,14 +528,6 @@ r""" 反斜杠\也是文本字符转义符"""
 """ 当使用某个打开后必须要关闭的对象(主要是file对象)时,使用with语句可以简化代码 """
 
 """ 数据分析入门 """
-plt_font = {
-            'family': 'SimHei',
-            'weight': 'bold',
-            'size': '12'
-            }
-plt.rc('font', **plt_font)               # 步骤一（设置字体的更多属性）
-plt.rc('axes', unicode_minus=False)  # 步骤二（解决坐标轴负数的负号显示问题）
-""" 自定义isiterable函数以后使用 """
 
 
 def isiterable(ele):
@@ -1136,7 +1141,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 #    p(a)
 #    p(s)
 """ 通过索引分组 """
-""" 通过索引的进行函数运算分组 """
+""" 通过索引进行函数运算分组 """
 """ by参数输入的函数会把索引作为参数自动代入函数进行计算,并以返回值进行分类,函数不能加括号,类似apply """
 # df110_6 = df(np.arange(25).reshape((5, 5)), columns=['a', 'b', 'c', 'd', 'e'],index=['Joe', 'Steve', 'Wes', 'Jim', 'Travis'])
 # lis110_6 = list('qqqww')
@@ -1161,7 +1166,7 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ quantile是series方法,但是因为group对象的元素是series,所以也适用 """
 # p(gp110_8.quantile(0.8))
 # def gp_max(x):
-# return x.max()
+#    return x.max()
 # p(gp110_8.aggregate(gp_max))
 # p(gp110_8.describe())
 """ 面向列的多函数应用 """
@@ -1182,11 +1187,22 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ apply:一般性的拆分,应用,合并 """
 """ 左闭右开索引,待解? """
 # def gp_top(frm,n=5,column='tips_percent'):
-# return frm.sort_values(by=column,ascending=False)[:n]
-# p(gp_top(df110_9,n=6))
+#    return frm.sort_values(by=column,ascending=False)[:n]
+# p(gp_top(df110_9,n=4))
 """ apply应用函数时,被应用函数参数与函数名应当并列赋值 """
 """ groupby.apply应用聚合函数时,默认把分组依据和原始索引合并为层次化索引,设置group_keys参数可以关闭 """
-# p(df110_9.groupby(by=['smoker','day'],group_keys=False).apply(gp_top,n=1,column='total_bill'))
+# p(df110_9.groupby(by=['smoker','day'],group_keys=True).apply(gp_top,n=2,column='total_bill'))
+""" 利用gp.apply计算组内百分比,gp.apply方法使得各个分组独立 """
+# df_test=df({'k':list('qqwwe'),'v':[1,2,3,4,5]})
+# gp_test=df_test.groupby(df_test['k'],group_keys=True)
+# def pxx(x):
+#    return x/x.sum()
+""" group.apply不修改索引,只是拆分-应用聚合函数-再按照原索引对齐重新合并 """
+# df_test['p'] =gp_test['v'].apply(pxx)
+""" 普通的.agg方法,是直接按照分组依据生成索引 """
+# df_err=sr(gp_test['v'].agg(pxx))
+# p(df_test)
+# p(df_err)
 """ 分位数和桶分析 """
 """ groupby中by参数可以接受pd.cut和pd.qcut生成的对象 """
 # df110_11=df({'v1':np.random.rand(20),'v2':np.random.rand(20)})
@@ -1640,19 +1656,20 @@ r""" 以下语句与上述语句结果相同,其中'\s+'表示一个或多个空
 """ 解析json数据 """
 """ 用movielens数据 """
 """ 全美婴儿姓名 """
-years = range(1880, 2011)
-lis114_1 = []
-cols114_1 = ['name', 'sex', 'births']
-for year in years:
-    txt_path = 'd:/notes-python/examples/datasets/babynames/yob{}.txt'.format(
-        year)
-    df114_1 = pd.read_csv(txt_path, names=cols114_1)
+# years = range(1880, 2011)
+# lis114_1 = []
+# cols114_1 = ['name', 'sex', 'births']
+# for year in years:
+#     txt_path = 'd:/notes-python/examples/datasets/babynames/yob{}.txt'.format(
+#         year)
+#     df114_1 = pd.read_csv(txt_path, names=cols114_1)
 
-    df114_1['year'] = year
-    lis114_1.append(df114_1)
-df114_2 = pd.concat(lis114_1, ignore_index=True)
-total_birth=df114_2.pivot_table('births',index='year',columns='sex',aggfunc=sum)
-p(total_birth.tail())
-total_birth.plot(title='按性别和年份区分总出生人口')
+#     df114_1['year'] = year
+#     lis114_1.append(df114_1)
+# df114_2 = pd.concat(lis114_1, ignore_index=True)
+# total_birth = df114_2.pivot_table(
+#     'births', index='year', columns='sex', aggfunc=sum)
+# p(total_birth.tail())
+# total_birth.plot(title='按性别和年份区分总出生人口')
 """ usda食品数据库 """
 """ 联邦选举委员会数据库 """
